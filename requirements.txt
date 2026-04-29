@@ -1,0 +1,44 @@
+# --- Core scientific stack ---
+numpy>=1.26,<2.2
+pandas>=2.2,<2.3
+scipy>=1.13
+
+# --- Geospatial ---
+geopandas>=1.0,<1.1
+shapely>=2.0,<2.1
+pyproj>=3.6,<3.8
+fiona>=1.10
+rtree>=1.3
+pyogrio>=0.10
+
+# --- OSM & routing ---
+osmnx>=2.0,<2.1
+networkx>=3.3
+overpy>=0.7
+
+# --- PostGIS / DB ---
+psycopg[binary]>=3.2
+sqlalchemy>=2.0
+geoalchemy2>=0.16
+
+# --- Raster ---
+rasterio>=1.4
+rioxarray>=0.17
+
+# --- Visualisierung ---
+matplotlib>=3.9
+contextily>=1.6
+folium>=0.18
+mapclassify>=2.8
+branca>=0.7
+
+# --- Notebooks & Tooling ---
+jupyterlab>=4.2
+ipywidgets>=8.1
+tqdm>=4.66
+python-dotenv>=1.0
+requests>=2.32
+
+# --- Code-Qualität (optional, dev) ---
+ruff>=0.7
+black>=24.10
