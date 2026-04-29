@@ -1,0 +1,56 @@
+# --- Daten (nicht versionieren) ---
+data/raw/*
+data/processed/*
+data/external/*
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/external/.gitkeep
+*.osm.pbf
+*.osm
+*.gpkg
+*.shp
+*.shx
+*.dbf
+*.prj
+*.cpg
+*.tif
+*.tiff
+*.csv
+!docs/**/*.csv
+!notebooks/**/*.csv
+
+# --- Secrets ---
+.env
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.ipynb_checkpoints/
+*.egg-info/
+build/
+dist/
+
+# --- QGIS ---
+*.qgz~
+*.qgs~
+
+# --- OSMnx / Requests Cache ---
+cache/
+
+# --- IDE & OS ---
+.vscode/
+.idea/
+.DS_Store
+**/.DS_Store
+Thumbs.db
+
+# --- LibreOffice Lockfiles ---
+.~lock.*
+
+# --- Jupyter / Outputs ---
+notebooks/.ipynb_checkpoints/
+reports/figures/*.tmp
