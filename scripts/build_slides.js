@@ -99,7 +99,7 @@ function card(slide, x, y, w, h, headColor = C.primary) {
 // --- Build slides ----------------------------------------------------------
 
 const pres = newDeck();
-const TOTAL = 16;
+const TOTAL = 17;
 
 // --- 01 Title ---------------------------------------------------------------
 {
@@ -333,8 +333,8 @@ const TOTAL = 16;
     ["Walking-Graph (OSMnx)",      "Strassennetz für Isochronen",        "ODbL"],
     ["OSM admin_level=10",         "Quartier-Polygone (44 mit Score)",   "ODbL"],
     ["HB Zürich (LV95-Punkt)",     "Distanz-Referenz für H1-Test",       "—"],
+    ["Open-Elevation API",         "Höhe für Robustness Check (Confounder)", "CC0"],
     ["swisstopo / GeoAdmin",       "Hintergrundkarten (Folium-Tiles)",   "swisstopo Terms"],
-    ["BFS STATPOP / Mietpreis-Idx",  "geplant — siehe Limitationen (Slide 15)", "Open Data"],
   ];
 
   s.addTable(
@@ -606,7 +606,7 @@ const TOTAL = 16;
 {
   const s = pres.addSlide();
   s.background = { color: C.bg };
-  sectionTag(s, "DISKUSSION");
+  sectionTag(s, "DISKUSSION · 1/2");
   slideTitle(s, "Antwort auf die Forschungsfrage");
 
   card(s, 0.5, 1.65, 9.0, 1.4, C.primary);
@@ -615,7 +615,7 @@ const TOTAL = 16;
     { text: "liegen in der Stadtperipherie", options: { bold: true, color: C.primary } },
     { text: " (Leimbach, Witikon, Hirzenbach, Hottingen, Friesenberg) — über 70 Score-Punkte Abstand zum Zentrum. Die Korrelation Score × Distanz zum HB beträgt ", options: {} },
     { text: "ρ = −0.64 (p < 10⁻⁵)", options: { bold: true, color: C.bad } },
-    { text: " — Zentralität ist der dominante Treiber.", options: {} },
+    { text: " — Zentralität ist ein starker Treiber. Robustheits-Check folgt.", options: {} },
   ], { x: 0.7, y: 1.85, w: 8.6, h: 1.05,
        fontFace: FONT_B, fontSize: 14, color: C.ink, margin: 0 });
 
@@ -637,7 +637,82 @@ const TOTAL = 16;
   pageNumber(s, 14, TOTAL);
 }
 
-// --- 15 Limitationen -------------------------------------------------------
+// --- 15 Robustness Check (neu) ---------------------------------------------
+{
+  const s = pres.addSlide();
+  s.background = { color: C.bg };
+  sectionTag(s, "DISKUSSION · 2/2");
+  slideTitle(s, "Robustness Check — H1 hält stand");
+
+  // Linke Karte: Regressionstabelle
+  card(s, 0.5, 1.65, 5.4, 3.4, C.primary);
+  s.addText("Multi-Variate-Regression  (n = 44, R² = 0.75)", {
+    x: 0.7, y: 1.8, w: 5.0, h: 0.35,
+    fontFace: FONT_H, fontSize: 13, bold: true, color: C.primary, margin: 0,
+  });
+
+  // Tabellen-Header
+  const tx = 0.7, ty = 2.25, colW = [1.6, 0.95, 0.95, 0.95, 0.7];
+  const headers = ["Prädiktor", "bivar. r", "partiell β", "p-Wert", "Status"];
+  let cx = tx;
+  headers.forEach((h, i) => {
+    s.addText(h, {
+      x: cx, y: ty, w: colW[i], h: 0.3,
+      fontFace: FONT_H, fontSize: 10, bold: true, color: C.mute, margin: 0,
+    });
+    cx += colW[i];
+  });
+
+  const rowsR = [
+    ["Distanz HB",   "−0.61",  "−3.65",  "0.011",   "*",   C.good],
+    ["Höhe (approx)", "+0.08", "+0.07",  "0.281",   "n.s.", C.mute],
+    ["POI-Dichte",   "+0.84",  "+0.14",  "<10⁻⁸",   "***",  C.hi],
+  ];
+  rowsR.forEach((row, ri) => {
+    const ry = ty + 0.4 + ri * 0.42;
+    let rx = tx;
+    row.slice(0, 5).forEach((val, i) => {
+      const isStatus = i === 4;
+      s.addText(val, {
+        x: rx, y: ry, w: colW[i], h: 0.32,
+        fontFace: i === 0 ? FONT_B : "Consolas",
+        fontSize: i === 0 ? 11 : 10.5,
+        bold: isStatus || i === 0,
+        color: isStatus ? row[5] : C.ink,
+        margin: 0, valign: "middle",
+      });
+      rx += colW[i];
+    });
+  });
+
+  s.addText("Signifikanz-Codes:  *** p<0.001 · ** p<0.01 · * p<0.05", {
+    x: 0.7, y: 4.55, w: 5.0, h: 0.3,
+    fontFace: FONT_B, fontSize: 9, italic: true, color: C.mute, margin: 0,
+  });
+
+  // Rechte Karte: drei Findings
+  card(s, 6.0, 1.65, 3.5, 3.4, C.secondary);
+  s.addText("Was das bedeutet", {
+    x: 6.2, y: 1.8, w: 3.2, h: 0.35,
+    fontFace: FONT_H, fontSize: 13, bold: true, color: C.secondary, margin: 0,
+  });
+  s.addText([
+    { text: "H1 robust", options: { bold: true, color: C.good, breakLine: true } },
+    { text: "Distanz bleibt nach Kontrolle für Höhe und POI-Dichte signifikant.", options: { breakLine: true } },
+    { text: " ", options: { breakLine: true } },
+    { text: "Topografie inkonklusiv", options: { bold: true, color: C.mute, breakLine: true } },
+    { text: "Höhe approximiert (Open-Elevation-API zum Zeitpunkt down) — kein definitives Urteil.", options: { breakLine: true } },
+    { text: " ", options: { breakLine: true } },
+    { text: "POI-Dichte tautologisch", options: { bold: true, color: C.hi, breakLine: true } },
+    { text: "Score wird aus POIs berechnet — Korrelation strukturell zu erwarten.", options: {} },
+  ], { x: 6.2, y: 2.25, w: 3.2, h: 2.7,
+       fontFace: FONT_B, fontSize: 10.5, color: C.ink, margin: 0 });
+
+  smallFooter(s, "OLS-Regression mit statsmodels · Daten: reports/robustness_data.csv");
+  pageNumber(s, 15, TOTAL);
+}
+
+// --- 16 Limitationen -------------------------------------------------------
 {
   const s = pres.addSlide();
   s.background = { color: C.bg };
@@ -647,7 +722,7 @@ const TOTAL = 16;
   const lim = [
     { h: "Datenqualität OSM", b: "Kleine, unmappte Geschäfte fehlen. Annahme: Verzerrung gering, weil Geschäfte ähnlicher Klassifikation OSM-mässig konsistent sind." },
     { h: "Mietpreis-Validierung offen", b: "Stadt-Zürich-Mietpreis-Datensatz war zum Auswertungszeitpunkt unter dokumentierter URL nicht erreichbar (HTTP 404) — H1 wurde via Distanz zum HB validiert." },
-    { h: "STATPOP nicht eingebunden", b: "BFS-Hektar-Bevölkerungsraster ist nur per manuellem Download verfügbar; Bevölkerungsdichte als zusätzliche Validierung steht aus." },
+    { h: "Topografie nur approximiert", b: "Open-Elevation-API zum Auswertungszeitpunkt down. Höhen-Confounder konnte daher nicht final getestet werden — DEM-basiert wäre der saubere Weg." },
     { h: "Luftlinien-Approximation", b: "Score nutzt KDTree-Distanz, nicht echte Strassengraph-Wege. Validierung über OSMnx-Demo-Isochronen (Notebook 04)." },
   ];
 
@@ -661,10 +736,10 @@ const TOTAL = 16;
       fontFace: FONT_B, fontSize: 11, color: C.ink, margin: 0 });
   });
 
-  pageNumber(s, 15, TOTAL);
+  pageNumber(s, 16, TOTAL);
 }
 
-// --- 16 Ausblick + Schlussfolie --------------------------------------------
+// --- 17 Ausblick + Schlussfolie --------------------------------------------
 {
   const s = pres.addSlide();
   darkBg(s);
@@ -675,8 +750,8 @@ const TOTAL = 16;
   });
 
   const next = [
+    "DEM-basierte Topografie + Multi-Variate-Regression mit ÖV-Anbindung",
     "Echtzeit-Mobilitätsdaten — SBB GTFS, ZVV-Reisezeiten",
-    "Sentiment-Scores aus TripAdvisor / Google Reviews je POI",
     "Dynamisches Re-Scoring bei neuem POI (QGIS-Live-Demo)",
     "Erweiterung auf Winterthur, Basel — nationaler Vergleich",
   ];
@@ -704,7 +779,7 @@ const TOTAL = 16;
   });
 
   smallFooter(s, "© OpenStreetMap-Mitwirkende · Stadt Zürich · BFS · swisstopo", true);
-  pageNumber(s, 16, TOTAL, true);
+  pageNumber(s, 17, TOTAL, true);
 }
 
 // Write
