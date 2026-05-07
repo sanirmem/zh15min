@@ -51,7 +51,7 @@
 > Neun Notebooks (sieben Kern + zwei für die topografische Erweiterung), jede Stufe reproduzierbar. „**Ein `docker compose up -d` und `jupyter execute` reichen, um den ganzen Score zu reproduzieren.**"
 
 ### Slide 11 — Score-Karte  *(40 s)*
-> *(Live-Demo: Folium-Map `reports/figures/score_map.html` öffnen statt der statischen Slide-Karte; Layer „Quartiere" einblenden, dann POI-Layer aktivieren)* „Hier seht ihr Zürich mit 744 Hex-Zellen, je 200 m breit. Grün = hohe Erreichbarkeit, Rot = niedrige. Die Range geht von 8 bis 93. Wenn ich den Quartier-Layer einblende, sieht man die offiziellen Polygone darüber — und mit dem POI-Layer wird sichtbar, warum die Innenstadt so grün ist."
+> *(Live-Demo: Folium-Map `reports/figures/score_map.html` öffnen statt der statischen Slide-Karte; Layer „Quartiere" einblenden, dann POI-Layer aktivieren)* „Hier seht ihr Zürich mit 744 Hex-Zellen, je 200 m breit. Grün = hohe Erreichbarkeit, Rot = niedrige. **Hex-Range 0 – 94, Median 23, Mittel 30** — die Spitze über 90 in der Innenstadt (Lindenhof, Werd, Rathaus), Periphery oft unter 20. Wenn ich den Quartier-Layer einblende, sieht man die offiziellen Polygone darüber — und mit dem POI-Layer wird sichtbar, warum die Innenstadt so grün ist."
 
 ### Slide 12 — 3D-Skyline (NEU)  *(25 s)*
 > *(Live-Demo via QGIS-Projekt `qgis/zh15min.qgz`)* „Damit der Score nicht abstrakt bleibt, haben wir ihn in QGIS als 3D-Skyline visualisiert: **Höhe der Hex-Zelle = Score × 30**. Innenstadt-Quartiere ragen wie Wolkenkratzer, periphere Wohnviertel sind flach. **Live-Layer auf der PostGIS-Tabelle** — wenn ich einen neuen POI in die DB einsetze, reagiert die Karte. Damit haben wir die Brücke vom Algorithmus zur Stakeholder-Demo."
@@ -66,8 +66,8 @@
 > *(Don't forget: Methodik kurz nennen — POI-zentriertes Dijkstra mit 15-Min-Cutoff, 33 Sekunden für 8000 POIs.)*
 
 ### Slide 14 — Hypothesen-Test  *(35 s)*
-> **H1 unterstützt:** Mietpreis korreliert positiv mit Score, **Spearman ρ = +0.56 bei p < 0.001** und n = 34 — Erreichbarkeit übersetzt sich tatsächlich in den Markt.
-> **H1a hochsignifikant:** Spearman ρ = −0.67 bei p < 10⁻⁴, n = 34 — Distanz zum HB ist ein starker Prädiktor.
+> **H1 unterstützt:** Mietpreis korreliert positiv mit Score, **Spearman ρ = +0.56, Pearson r = +0.56** bei p ≈ 5·10⁻⁴ und n = 34 — Erreichbarkeit übersetzt sich tatsächlich in den Markt.
+> **H1a hochsignifikant:** Spearman ρ = −0.81, Pearson r = −0.84 bei p < 10⁻⁸, n = 34 — Distanz zum HB ist ein noch stärkerer, methodisch sauberer Prädiktor (kein Markt-Confounder). Konvergenz beider H1-Tests.
 > **H2 quantitativ widerlegt:** Mit BFS-STATPOP-Dichten und Schwellwerten finden wir **0 von 34 Quartieren** als „Wüstenkandidaten". **Das ist die zentrale Erkenntnis**: Zürich hat keine US-typischen „food deserts" — wo viele Menschen wohnen, gibt es auch Versorgung. Stadtplanerisch eine positive Aussage.
 
 ### Slide 15 — Top/Flop Quartiere  *(25 s)*
@@ -100,7 +100,7 @@
 > Das ist die offizielle Stadt-Zürich-Liste der statistischen Quartiere (WFS-Endpunkt von ogd.stadt-zuerich.ch). Wir haben uns bewusst gegen die feinere OSM-`admin_level=10`-Aufteilung entschieden, weil die offizielle Geometrie mit dem Mietpreis-Index und STATPOP-Bevölkerungsdaten einheitlich joinbar ist.
 
 **„Warum nicht echte Walking-Distanzen statt Luftlinie im Hauptscore?"**
-> Wir haben das empirisch validiert (NB06 Cell 30): für alle 34 Quartier-Centroide haben wir die echte Strassengraph-Distanz zum HB via Dijkstra berechnet und mit der Luftlinie korreliert. **Pearson r = 0.988**, Median-Detour-Faktor 1.20, worst-case 1.41. Die Approximation erklärt 97.6 % der Varianz in echten Walking-Distanzen — defensiv voll vertretbar. **Plus** wir haben mit der Tobler-Erweiterung (Slide 13) zusätzlich die topografisch korrekte Variante geliefert — beide Ansätze sind im Repo.
+> Wir haben das empirisch validiert (NB06 Cell 30): für alle 34 Quartier-Centroide haben wir die echte Strassengraph-Distanz zum HB via Dijkstra berechnet und mit der Luftlinie korreliert. **Pearson r = 0.991**, Median-Detour-Faktor 1.19, worst-case 1.41. Die Approximation erklärt 98.2 % der Varianz in echten Walking-Distanzen — defensiv voll vertretbar. **Plus** wir haben mit der Tobler-Erweiterung (Slide 13) zusätzlich die topografisch korrekte Variante geliefert — beide Ansätze sind im Repo.
 
 **„Wie geht ihr mit Confoundern um?"** ⭐
 > Genau dafür haben wir den Robustness Check auf Slide 18 gemacht: multivariate Regression mit Distanz, Höhe (SwissALTI3D-DEM) und POI-Dichte. R² = 0.91 (adj. 0.90). Distanz bleibt nach Kontrolle hochsignifikant (β = −9.52, p < 10⁻⁶). Topografie ist Co-Treiber (β = −0.107, p < 10⁻³). **Plus** der eigenständige topografische Score auf Slide 13 zeigt das Pattern direkt visuell — Hangzonen verlieren exakt das, was die Regression vorhersagt.

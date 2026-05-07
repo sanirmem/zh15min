@@ -2,6 +2,8 @@
 
 **N Quartiere mit Score:** 34
 
+> Alle Statistiken auf **Quartier-Ebene** (n = 34, jedes Quartier hat den Mittelwert seiner Hex-Zellen). Der Hex-Cell-Mittel über 744 Zellen liegt mit ≈ 29.5 niedriger, weil unbewohnte Periphery-Hex auch einbezogen werden.
+
 ## Top 5
 
 | name | score_mean |
@@ -22,5 +24,5 @@
 | Affoltern | 19.05 |
 | Friesenberg | 19.08 |
 
-**Stadt-Mittelwert:** 46.9
+**Quartier-Mittel (n=34):** 46.9
 **Range:** 8.8–91.9

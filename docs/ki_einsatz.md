@@ -14,7 +14,7 @@ Gemäss Kurs-Hinweis (FS 2026, Folie zu „Software used in this course": ChatGP
 
 ### 2.1 Code-Optimierung
 
-Initiale Score-Berechnung war eine doppelte for-Schleife (Zellen × POIs) → O(n·m). KI-Vorschlag: `scipy.spatial.cKDTree.query_ball_point(cells, r=d_max)` reduziert auf O((n+m)·log(n)). Resultat: Score-Berechnung von ~6 min auf <10 s für 12 000 Zellen × 4 500 POIs.
+Initiale Score-Berechnung war eine doppelte for-Schleife (Zellen × POIs) → O(n·m). KI-Vorschlag: `scipy.spatial.cKDTree.query_ball_point(cells, r=d_max)` reduziert auf O((n+m)·log(n)). Resultat: Score-Berechnung in < 1 s für 744 Hex-Zellen × 8 092 POIs (vs. mehrere Minuten naive O(n·m)).
 
 ### 2.2 Hypothesen-Generierung
 
@@ -34,7 +34,7 @@ Aufgabenstellung: „Wir wollen den flachen 5-km/h-Score topografisch korrigiere
 
 1. **`src/zh15min/elevation.py`** — Höhen-Anreicherung des OSMnx-Graphs aus dem SwissALTI3D-DEM. Inklusive Reprojektion WGS84→LV95 via pyproj-Transformer und vektorisiertem `rasterio.sample()` für 60'000+ Knoten.
 2. **`src/zh15min/isochron.py`** — Tobler-Hiking-Funktion `W = 6·exp(-3.5·|s + 0.05|)` als zusätzliche Kanten-Gewichtung, **additiv** zum bestehenden flat-Pfad. Slope-Clipping bei ±50 % gegen OSM-Treppen-Artefakte (392 % Maxima durch übereinander liegende Edge-Endpunkte).
-3. **`src/zh15min/score_network.py`** — POI-zentriertes `single_source_dijkstra_path_length` mit 15-Min-Cutoff statt zell-zentriertem KDTree (1000× Dijkstras statt 12000× pro Zelle). Ergebnis: 33 s für 8092 POIs auf 744 Hex-Zellen.
+3. **`src/zh15min/score_network.py`** — POI-zentriertes `single_source_dijkstra_path_length` mit 15-Min-Cutoff. Statt 744 Zell-Dijkstras × 6 Kategorien laufen wir pro POI einen Dijkstra; nach Source-Knoten-Dedup landen wir bei ~3 000 unique Dijkstras für alle 8 092 POIs. Ergebnis: ~33 s Gesamtlaufzeit.
 4. **`notebooks/06b_delta.ipynb`** — Δ-Visualisierung mit drei Karten und Quartier-Ranking.
 
 KI-Beitrag: Architektur-Vorschlag, Tobler-Formel-Implementierung, Performance-Optimierung (vektorisierter Inner-Loop via `pd.Series.reindex` statt Python-`for`-Schleife). Wir haben den Code anhand von 9 Pytest-Cases verifiziert (Tobler-Maximum bei −5 %, Bergauf-Bergab-Asymmetrie, Slope-Clipping, None-Fallback, Graph-Integration) — alle Tests grün. Plausibilitätsbefund auf 34 Quartieren (Top-Verlierer Oberstrass −13.8, Fluntern −11.2; Top-Gewinner Mühlebach +8.5, Seefeld +6.3) entspricht der Topografie Zürichs — die KI-vorgeschlagene Implementierung verhält sich wie erwartet.
