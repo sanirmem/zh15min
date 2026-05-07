@@ -98,3 +98,26 @@ def total_score(access: pd.DataFrame) -> pd.DataFrame:
         df["score"] += meta["weight"] * df[f"acc_{cat}"]
     df["score"] = (df["score"] * 100).clip(0, 100).round(2)
     return df
+
+
+def score_with_weights(
+    access: pd.DataFrame,
+    weights: dict[str, float],
+) -> pd.Series:
+    """Score (0–100) mit benutzerdefinierten Kategorie-Gewichten.
+
+    Praktisch für Sensitivitäts-Analysen: man füttert den gleichen
+    ``access``-DataFrame mit verschiedenen Gewichts-Szenarien und kann so
+    prüfen, wie robust das Ranking gegen Gewichts-Wahl ist.
+    """
+    if abs(sum(weights.values()) - 1.0) > 1e-6:
+        raise ValueError(
+            f"Gewichte müssen sich zu 1.0 summieren (aktuell {sum(weights.values()):.4f})"
+        )
+    s = pd.Series(0.0, index=access.index)
+    for cat, w in weights.items():
+        col = f"acc_{cat}"
+        if col not in access.columns:
+            raise KeyError(f"Spalte {col!r} fehlt in access — wurde sie berechnet?")
+        s += w * access[col]
+    return (s * 100).clip(0, 100).round(2)
