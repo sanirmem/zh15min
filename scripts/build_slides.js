@@ -284,37 +284,43 @@ const TOTAL = 20;
   const s = pres.addSlide();
   s.background = { color: C.bg };
   sectionTag(s, "EINLEITUNG · 3/4");
-  slideTitle(s, "Zwei testbare Hypothesen");
+  slideTitle(s, "Drei testbare Hypothesen");
 
   const hyp = [
     {
       tag: "H1", color: C.primary,
-      head: "Score korreliert mit Zentralität",
-      body: "Quartiere mit grösserer Distanz zum Hauptbahnhof haben einen niedrigeren 15-Min-Score — zentrale Lage bedeutet bessere Erreichbarkeit.",
-      test: "Pearson- & Spearman-Korrelation Score × Distanz HB (n = 34 Quartiere)",
+      head: "Score ↔ Mietpreis",
+      body: "Quartiere mit höherem 15-Min-Score haben höhere Median-Mietpreise — Erreichbarkeit übersetzt sich in Standortwert.",
+      test: "Pearson + Spearman Score × Median-Mietpreis (Stadt Zürich Open Data, n = 34)",
+    },
+    {
+      tag: "H1a", color: C.secondary,
+      head: "Zentralitäts-Robustness",
+      body: "Quartiere mit grösserer HB-Distanz haben einen niedrigeren Score — methodisch sauberer Proxy ohne Marktdaten-Confounder.",
+      test: "Pearson + Spearman Score × Distanz HB (LV95-Centroide, n = 34)",
     },
     {
       tag: "H2", color: C.bad,
       head: "Wüsteneffekt",
       body: "Es gibt Quartiere mit hoher Bevölkerungsdichte und niedrigem Score — strukturelle Versorgungs-Wüsten.",
-      test: "Schwellenwert-Test: Dichte > P75 UND Score-P25 ≤ P25 (BFS STATPOP 2024)",
+      test: "Schwellenwert-Test: Dichte > P75 UND Score-P25 ≤ P25 (BFS STATPOP 2023)",
     },
   ];
 
   hyp.forEach((h, i) => {
-    const y = 1.7 + i * 1.55;
-    card(s, 0.5, y, 9.0, 1.4, h.color);
-    s.addShape("ellipse", { x: 0.7, y: y + 0.28, w: 0.85, h: 0.85,
+    const y = 1.6 + i * 1.20;
+    card(s, 0.5, y, 9.0, 1.10, h.color);
+    s.addShape("ellipse", { x: 0.7, y: y + 0.18, w: 0.75, h: 0.75,
       fill: { color: h.color }, line: { color: h.color, width: 0 } });
-    s.addText(h.tag, { x: 0.7, y: y + 0.28, w: 0.85, h: 0.85,
-      fontFace: FONT_H, fontSize: 22, bold: true, color: "FFFFFF",
+    s.addText(h.tag, { x: 0.7, y: y + 0.18, w: 0.75, h: 0.75,
+      fontFace: FONT_H, fontSize: 18, bold: true, color: "FFFFFF",
       align: "center", valign: "middle", margin: 0 });
-    s.addText(h.head, { x: 1.7, y: y + 0.2, w: 7.6, h: 0.4,
-      fontFace: FONT_H, fontSize: 16, bold: true, color: C.ink, margin: 0 });
-    s.addText(h.body, { x: 1.7, y: y + 0.6, w: 7.6, h: 0.5,
-      fontFace: FONT_B, fontSize: 12, color: C.ink, margin: 0 });
-    s.addText("Test: " + h.test, { x: 1.7, y: y + 1.05, w: 7.6, h: 0.3,
-      fontFace: FONT_B, fontSize: 10.5, italic: true, color: C.mute, margin: 0 });
+    s.addText(h.head, { x: 1.6, y: y + 0.14, w: 7.7, h: 0.32,
+      fontFace: FONT_H, fontSize: 14, bold: true, color: C.ink, margin: 0 });
+    s.addText(h.body, { x: 1.6, y: y + 0.44, w: 7.7, h: 0.4,
+      fontFace: FONT_B, fontSize: 10.5, color: C.ink, margin: 0 });
+    s.addText("Test: " + h.test, { x: 1.6, y: y + 0.82, w: 7.7, h: 0.25,
+      fontFace: FONT_B, fontSize: 9.5, italic: true, color: C.mute, margin: 0 });
   });
 
   pageNumber(s, 6, TOTAL);
@@ -630,30 +636,42 @@ const TOTAL = 20;
   const s = pres.addSlide();
   s.background = { color: C.bg };
   sectionTag(s, "ERGEBNISSE · 4/6");
-  slideTitle(s, "Hypothesen-Test");
+  slideTitle(s, "Hypothesen-Test — H1, H1a, H2");
 
-  // H1
-  card(s, 0.5, 1.65, 4.5, 3.4, C.primary);
-  s.addText("H1 — Score ↔ Zentralität", {
-    x: 0.7, y: 1.85, w: 4.1, h: 0.4,
-    fontFace: FONT_H, fontSize: 16, bold: true, color: C.primary, margin: 0,
+  // H1 — Mietpreis
+  card(s, 0.4, 1.55, 3.0, 3.55, C.primary);
+  s.addText("H1 — Score ↔ Mietpreis", {
+    x: 0.55, y: 1.72, w: 2.7, h: 0.35,
+    fontFace: FONT_H, fontSize: 12, bold: true, color: C.primary, margin: 0,
   });
-  bigStat(s, 0.5, 2.45, 4.5, 1.0, "ρ = −0.81", "Spearman, n = 34, p < 10⁻⁸", C.primary);
-  s.addText("Stützt H1 hochsignifikant: je weiter vom HB, desto niedriger der Score. Pearson r = −0.84 mit p < 10⁻⁹. Zusatz-Test mit Stadt-Zürich-Mietpreisen 2024 ist jetzt ebenfalls signifikant (ρ = +0.56, p < 0.001) — Konvergenz beider Validierungen.", {
-    x: 0.7, y: 3.6, w: 4.1, h: 1.3,
-    fontFace: FONT_B, fontSize: 11, color: C.ink, margin: 0,
+  bigStat(s, 0.4, 2.18, 3.0, 0.9, "ρ = +0.56", "Spearman, n=34, p<10⁻³", C.primary);
+  s.addText("Stützt H1: höherer Score ↔ höherer Median-Mietpreis (Pearson r = +0.56, p ≈ 5·10⁻⁴). Lindenhof, Rathaus mit hohen Score- UND hohen Miet-Werten; Leimbach, Witikon mit beiden tief.", {
+    x: 0.55, y: 3.18, w: 2.7, h: 1.85,
+    fontFace: FONT_B, fontSize: 9.5, color: C.ink, margin: 0,
   });
 
-  // H2
-  card(s, 5.05, 1.65, 4.5, 3.4, C.good);
+  // H1a — HB-Distanz (Robustness)
+  card(s, 3.5, 1.55, 3.0, 3.55, C.secondary);
+  s.addText("H1a — Score ↔ HB-Distanz", {
+    x: 3.65, y: 1.72, w: 2.7, h: 0.35,
+    fontFace: FONT_H, fontSize: 12, bold: true, color: C.secondary, margin: 0,
+  });
+  bigStat(s, 3.5, 2.18, 3.0, 0.9, "ρ = −0.81", "Spearman, n=34, p<10⁻⁸", C.secondary);
+  s.addText("Stützt H1a hochsignifikant: je weiter vom HB, desto niedriger der Score. Pearson r = −0.84, p < 10⁻⁹. Konvergenz beider H1-Tests bestätigt das Zentralitäts-Muster ohne Markt-Confounder.", {
+    x: 3.65, y: 3.18, w: 2.7, h: 1.85,
+    fontFace: FONT_B, fontSize: 9.5, color: C.ink, margin: 0,
+  });
+
+  // H2 — Wüsteneffekt
+  card(s, 6.6, 1.55, 3.0, 3.55, C.good);
   s.addText("H2 — Wüsteneffekt widerlegt", {
-    x: 5.25, y: 1.85, w: 4.1, h: 0.4,
-    fontFace: FONT_H, fontSize: 16, bold: true, color: C.good, margin: 0,
+    x: 6.75, y: 1.72, w: 2.7, h: 0.35,
+    fontFace: FONT_H, fontSize: 12, bold: true, color: C.good, margin: 0,
   });
-  bigStat(s, 5.05, 2.45, 4.5, 1.0, "0 / 34", "Quartiere mit Dichte > P75 UND Score-P25 ≤ P25", C.good);
-  s.addText("Quantitativer Test mit STATPOP-Bevölkerungsdichte: kein Quartier erfüllt beide Schwellen. Zürichs Stadtstruktur ist konsistent — keine US-typischen 'food deserts'. Periphere Quartiere haben tiefen Score (5 mit < 20), aber dort wohnen auch wenige Menschen.", {
-    x: 5.25, y: 3.6, w: 4.1, h: 1.3,
-    fontFace: FONT_B, fontSize: 11, color: C.ink, margin: 0,
+  bigStat(s, 6.6, 2.18, 3.0, 0.9, "0 / 34", "Dichte > P75 ∧ Score-P25 ≤ P25", C.good);
+  s.addText("Kein Quartier erfüllt beide Schwellen. Zürichs Stadtstruktur ist konsistent — keine US-typischen 'food deserts'. Periphere Quartiere haben tiefen Score (5 < 20), dort wohnen aber auch wenige Menschen.", {
+    x: 6.75, y: 3.18, w: 2.7, h: 1.85,
+    fontFace: FONT_B, fontSize: 9.5, color: C.ink, margin: 0,
   });
 
   smallFooter(s, "Werte aus 06_gap_analysis.ipynb · Live-Reproduzierbar");
@@ -896,7 +914,7 @@ const TOTAL = 20;
     { text: "Spearman ρ > 0.98 in allen Szenarien.", options: { breakLine: true } },
     { text: " ", options: { breakLine: true } },
     { text: "Distanz-Approximation valid", options: { bold: true, color: C.primary, breakLine: true } },
-    { text: "Luftlinie vs. Strassennetz: r = 0.988.", options: {} },
+    { text: "Luftlinie vs. Strassennetz: r = 0.991.", options: {} },
   ], { x: 6.2, y: 2.25, w: 3.2, h: 2.7,
        fontFace: FONT_B, fontSize: 10, color: C.ink, margin: 0 });
 
