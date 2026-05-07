@@ -42,3 +42,4 @@ requests>=2.32
 # --- Code-Qualität (optional, dev) ---
 ruff>=0.7
 black>=24.10
+pytest>=8.0

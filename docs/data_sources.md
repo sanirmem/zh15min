@@ -15,6 +15,7 @@ Dieses Dokument erklärt, **welche Daten wir benutzen, wo sie herkommen, wie sie
 | 5 | **Stadt Zürich Open Data** | Statistische Quartiere, Quartiergrenzen | GeoJSON | LV95 | CC BY 4.0 |
 | 6 | **Stadt Zürich** Wohnungs-Index | Median-Mietpreis pro Quartier | CSV | – | CC BY 4.0 |
 | 7 | **swisstopo / GeoAdmin** | Hintergrundkarten (TileMap) für Folium | XYZ-Tiles | Web Mercator | terms_of_use_swisstopo |
+| 8 | **swisstopo SwissALTI3D** | Höhenmodell — Knoten-Höhen + Steigung im Walking-Graph | GeoTIFF | LV95 | swisstopo Open Government Data — frei mit Quellenangabe |
 
 ---
 
@@ -114,6 +115,32 @@ Für hübsche Karten in der Präsentation nutzen wir swisstopo-Tiles:
 
 Lizenz: Nutzungsbedingungen swisstopo — kostenlos für nicht-kommerziellen Gebrauch mit Quellenangabe.
 
+## 8. SwissALTI3D — Höhenmodell (für topografischen Score)
+
+Das **digitale Höhenmodell von swisstopo** mit 0.5 m bzw. 2 m Raster-Auflösung. Wir nutzen es, um den Walking-Graph-Knoten Höhen-Werte zuzuweisen und daraus pro Kante eine Steigung zu berechnen — die Grundlage des **topografischen Scores** (Tobler-basierte Walking-Geschwindigkeit statt konstanter 5 km/h).
+
+**Bezugsweg** (Login bei swisstopo erforderlich, kann **nicht** automatisiert werden):
+
+1. Browser → <https://www.swisstopo.admin.ch/de/geodata/height/alti3d.html>
+2. **„swissALTI3D Daten beziehen"** → swisstopo-Login (kostenlos)
+3. **Ausschnitt Zürich** auf der Karte aufziehen (BBox ungefähr 8.45° N, 47.32° E → 8.63° N, 47.44° E)
+4. **Format**: GeoTIFF, **Auflösung**: 2 m, **CRS**: LV95 (EPSG:2056)
+5. Download starten — kommt per E-Mail-Link, kann ein paar Minuten dauern
+6. ZIP entpacken, GeoTIFF nach `data/external/swissalti3d_zh.tif` legen
+
+**Filename-Konvention**: Genau dieser Dateiname (`swissalti3d_zh.tif`) wird in `src/zh15min/elevation.py:DEFAULT_DEM_PATH` erwartet. Falls anders benannt, in `notebooks/02b_elevation.ipynb` den Pfad explizit übergeben.
+
+**Code-Verwendung**:
+```python
+from zh15min.elevation import enrich_graph_with_elevation, compute_edge_slopes
+graph = enrich_graph_with_elevation(graph)   # setzt z pro Knoten
+graph = compute_edge_slopes(graph)            # setzt slope pro Kante
+```
+
+**Lizenz**: swisstopo Open Government Data — kostenlos mit Quellenangabe „© swisstopo".
+
+**Warum nötig?** Zürich ist topografisch heterogen — Zürichberg (~870 m), Hönggerberg, Käferberg, Üetliberg liegen 200–400 m über dem Stadtkern. Eine flache 15-Min-Stadt-Berechnung unterschätzt die reale Gehzeit erheblich. Mit Höhen + Tobler-Funktion wird der Score realistisch.
+
 ---
 
 ## Zusammenfassung: Wo wird was benutzt?
@@ -122,11 +149,14 @@ Lizenz: Nutzungsbedingungen swisstopo — kostenlos für nicht-kommerziellen Geb
 |---|---|
 | `01_load_osm.ipynb` | 1 (OSMnx-POIs, Stadtgrenze), 7 (Hintergrund) |
 | `02_streetnet_statpop.ipynb` | 3 (Walking-Graph), 4 (STATPOP), 5 (Quartiere) |
+| **`02b_elevation.ipynb`** ⭐ | **3 (Walking-Graph aus 02), 8 (SwissALTI3D)** |
 | `03_postgis_import.ipynb` | 2 (Geofabrik PBF → osm2pgsql), Outputs aus 01/02 |
 | `04_isochrones.ipynb` | 3 |
 | `05_score.ipynb` | Outputs aus 01/04 |
+| **`05b_topo_score.ipynb`** | Outputs aus 02b/04 (geplant) |
 | `06_gap_analysis.ipynb` | 4, 5, 6, eigener Score |
+| **`06b_delta.ipynb`** | Vergleich flat vs. topografisch (geplant) |
 | `07_visualization.ipynb` | 7 + alles aus 05/06 |
 
 Bei allen Karten zwingend **Copyright-Hinweise**:
-> © OpenStreetMap-Mitwirkende · © swisstopo · BFS STATPOP 2023 · Stadt Zürich Open Data
+> © OpenStreetMap-Mitwirkende · © swisstopo · © swisstopo SwissALTI3D · BFS STATPOP 2023/2024 · Stadt Zürich Open Data

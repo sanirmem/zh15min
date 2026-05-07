@@ -18,6 +18,8 @@ data/external/*
 *.csv
 !docs/**/*.csv
 !notebooks/**/*.csv
+# DEM-URL-Liste committen (Reproduzierbarkeit der swisstopo-Auswahl)
+!data/external/swissalti3d_zh_links.csv
 
 # --- Secrets ---
 .env
