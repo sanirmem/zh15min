@@ -1,6 +1,6 @@
 # Sprecher-Notizen für die Videopräsentation
 
-> 9 Minuten total (3 Personen × 3 Min). 17 Slides → ø 32 s pro Slide. Jede Slide hat einen Zielsatz und ein „Don't forget".
+> 9 Minuten total (3 Personen × 3 Min). 18 Slides → ø 30 s pro Slide. Jede Slide hat einen Zielsatz und ein „Don't forget".
 
 ---
 
@@ -23,8 +23,8 @@
 > „Die Forschungsfrage lautet: *In welchen Quartieren Zürichs klaffen die grössten Lücken zwischen Wohnungsdichte und täglicher Infrastruktur?*"
 
 ### Slide 6 — Hypothesen  *(45 s)*
-> H1: Score korreliert negativ mit der Distanz zum Hauptbahnhof — Zentralität schlägt sich in Erreichbarkeit nieder. **Test:** Pearson + Spearman auf 44 Quartiere, plus Multi-Variate-Regression als Robustness-Check.
-> H2: Peripherie-Effekt — die schwächsten Quartiere liegen alle am Stadtrand. **Test:** Identifikation der Flop-Quartiere und qualitative Lage-Analyse.
+> H1: Score korreliert negativ mit der Distanz zum Hauptbahnhof — Zentralität schlägt sich in Erreichbarkeit nieder. **Test:** Pearson + Spearman auf 28 von 34 offiziellen Stadt-Zürich-Quartieren, plus Multi-Variate-Regression als Robustness-Check.
+> H2: Wüsteneffekt — Quartiere mit hoher Bevölkerungsdichte UND niedrigem Score (klassische „food deserts"). **Test:** Schwellenwert-Logik mit BFS STATPOP-Dichten und Score-P25.
 > *(Storytelling-Hinweis: Wir wollten H1 ursprünglich mit Mietpreisen testen, aber der Stadt-Zürich-Datensatz war unter der dokumentierten URL nicht erreichbar. Statt H1 zu kippen, haben wir sie auf einen testbaren Proxy — Distanz zum HB — umgestellt. Diese methodische Entscheidung erwähnen wir auch in den Limitationen.)*
 > Übergabe → Person B.
 
@@ -48,31 +48,33 @@
 
 ---
 
-## Person C — Ergebnisse, Diskussion & Schluss (Slides 11–17, ca. 3:35 Min)
+## Person C — Ergebnisse, Diskussion & Schluss (Slides 11–18, ca. 3:40 Min)
 
-### Slide 11 — Score-Karte  *(40 s)*
-> *(Live-Demo: Folium-Map `reports/figures/score_map.html` öffnen statt der statischen Slide-Karte)* „Hier seht ihr Zürich mit 744 Hex-Zellen, je 200 m breit. Grün = hohe Erreichbarkeit, Rot = niedrige. Die Range geht von 8 bis 93."
-> Mit Cursor zeigen: City (grün, ~93), Wiedikon (gelb, mittel), Leimbach (rot, ~8). Übergang: „Was sagen die Hypothesen-Tests?"
+### Slide 11 — Score-Karte  *(35 s)*
+> *(Live-Demo: Folium-Map `reports/figures/score_map.html` öffnen statt der statischen Slide-Karte; Layer „Quartiere" einblenden, dann POI-Layer aktivieren)* „Hier seht ihr Zürich mit 744 Hex-Zellen, je 200 m breit. Grün = hohe Erreichbarkeit, Rot = niedrige. Die Range geht von 8 bis 93. Wenn ich den Quartier-Layer einblende, sieht man die offiziellen Polygone darüber — und mit dem POI-Layer wird sichtbar, warum die Innenstadt so grün ist."
 
 ### Slide 12 — Hypothesen-Test  *(35 s)*
-> **H1 hochsignifikant: Spearman ρ = −0.64 bei p < 10⁻⁵** und n = 44 — Distanz zum HB ist ein starker Prädiktor.
-> **H2 qualitativ bestätigt:** fünf Quartiere mit Score < 20, alle peripher gelegen — Leimbach, Witikon, Hirzenbach, Hottingen, Friesenberg.
+> **H1 hochsignifikant: Spearman ρ = −0.67 bei p < 10⁻⁴** und n = 28 — Distanz zum HB ist ein starker Prädiktor.
+> **H2 quantitativ widerlegt:** Mit BFS-STATPOP-Dichten und Schwellwerten (Dichte > P75 ∧ Score-P25 ≤ P25) finden wir **0 von 28 Quartieren** als „Wüstenkandidaten". **Das ist die zentrale Erkenntnis**: Zürich hat keine US-typischen „food deserts" — die Stadtstruktur ist konsistent. Wo viele Menschen wohnen, gibt es auch Versorgung; wo Versorgung fehlt, wohnen wenige. Das ist stadtplanerisch eine positive Aussage.
 
 ### Slide 13 — Top/Flop  *(25 s)*
-> „Top: City, Langstrasse, Altstadt — alle in der kompakten Innenstadt mit Score über 88. Flop: **Leimbach, Witikon, Hirzenbach** — periphere Wohnviertel mit Score zwischen 8 und 16. **Über 70 Score-Punkte Differenz innerhalb derselben Stadt.**"
+> „Top: City, Langstrasse, Hard — alle in der kompakten Innenstadt mit Score über 75. Flop: **Leimbach, Witikon, Hottingen** — periphere Wohnviertel mit Score zwischen 8 und 17. **Über 70 Score-Punkte Differenz innerhalb derselben Stadt.**"
 
-### Slide 14 — Antwort auf Forschungsfrage  *(30 s)*
-> „Die grössten Lücken liegen in der Peripherie. Drei Implikationen: für die Stadtplanung Versorgungs-Auflagen in Entwicklungsgebieten, für Investoren preisliche Chancen mit Vermarktungsrisiko, für den Einzelhandel klare Expansions-Targets. **Aber Vorsicht: Korrelation ist nicht gleich Kausalität — schauen wir uns mögliche Confounder an.**"
+### Slide 14 — Cluster-Typologie  *(35 s)*  ⭐ neu
+> „Wenn wir nicht den linearen Score, sondern die sechs Kategorie-Erreichbarkeiten clustern, ergibt sich eine vier-typische Quartier-Landschaft. **Typ A** ist die zentrale Mischung mit allem in Walking-Distanz. **Typ B**, das Mittelband, lebt von guter ÖV-Anbindung. **Typ C** — Stadtnord-Rand — ist Erholung-positiv aber alle anderen Funktionen tief. **Typ D**, die periphere Wohnviertel, sind durchgehend unterdurchschnittlich. Diese Typologie ist methodisch unabhängig vom linearen Ranking — und stützt unsere Erzählung mehrdimensional."
 
-### Slide 15 — Robustness Check  *(40 s)*  ⭐ neu
-> *(Auf die drei Status-Tags zeigen)* „Die multivariate Regression mit Distanz, Höhe und POI-Dichte erklärt 75 % der Score-Varianz. Die Distanz zum HB bleibt **auch nach Kontrolle der Confounder signifikant** — β = −3.65, p = 0.011. Die approximierte Höhe zeigt isoliert keinen signifikanten Effekt — wir sagen aber transparent, dass die Open-Elevation-API zum Auswertungszeitpunkt nicht erreichbar war und wir mit einer Approximation arbeiten mussten. POI-Dichte ist tautologisch hochsignifikant, weil der Score aus den POIs berechnet wird — eine wichtige methodische Erinnerung."
-> *(Don't forget: gerade dieses Slide bekam dem Feedback unseres Dozenten zur Scheinkorrelation gerecht — aktiv ansprechen.)*
+### Slide 15 — Antwort auf Forschungsfrage  *(30 s)*
+> „Die grössten Lücken liegen in der Peripherie. Drei Implikationen: für die Stadtplanung Versorgungs-Auflagen in Entwicklungsgebieten, für Investoren preisliche Chancen mit Vermarktungsrisiko, für den Einzelhandel klare Expansions-Targets. **Aber Vorsicht: Korrelation ≠ Kausalität — schauen wir uns mögliche Confounder an.**"
 
-### Slide 16 — Limitationen  *(30 s)*
-> Vier Limitationen offen benennen: OSM-Datenqualität, fehlende Mietpreis-Validierung (HTTP 404), Topografie nur approximiert (API down), Luftlinien-Approximation. **Wir wissen, was wir nicht wissen.**
+### Slide 16 — Robustness Check  *(40 s)*  ⭐ verstärkt
+> *(Auf die drei Status-Tags zeigen)* „Die multivariate Regression mit Distanz, Höhe (aus DEM!) und POI-Dichte erklärt **82 % der Score-Varianz**. Die Distanz zum HB bleibt **auch nach Kontrolle der Confounder hochsignifikant** — β = −7.91, p < 0.001. **Topografie ist tatsächlich ein Co-Treiber**: höher gelegen = niedrigerer Score, β = −0.10 bei p = 0.004. Damit beantworten wir das Feedback unseres Dozenten direkt: Topografie ist real, aber Distanz erklärt zusätzlich Effekt. Und unsere Sensitivitäts-Analyse zeigt: Spearman-Rang-Korrelation der Quartier-Reihenfolge bleibt über 0.98 in allen Gewichts-Szenarien — das Ranking ist methodologisch robust."
+> *(Don't forget: dieses Slide ist die wissenschaftliche Stärke des Projekts — Zeit hier ruhig nehmen.)*
 
-### Slide 17 — Ausblick & Dank  *(20 s)*
-> „Nächste Iterationen: DEM-basierte Topografie, ÖV-Reisezeiten via SBB GTFS, dynamisches Re-Scoring bei neuen POIs in einer QGIS-Live-Demo, und nationaler Vergleich mit Winterthur und Basel. Vielen Dank — wir freuen uns auf eure Fragen."
+### Slide 17 — Limitationen  *(30 s)*
+> Vier Limitationen offen benennen: OSM-Datenqualität, **Mietpreis-Test schwach (Spearman ρ = +0.33, p = 0.09 n.s.)** — Trend in erwarteter Richtung, aber nicht signifikant. Hier kurz erklären: Premium-Wohnlagen wie Hottingen und Seefeld haben hohe Mieten OHNE POI-Dichte — sie repräsentieren eine konkurrierende Definition von „guter Lage" (ruhig + grün vs. fussläufig + gemischt). Plus subventionierte Wohnungen in zentralen Quartieren drücken den Markt-Median dort. Stichprobe n=28 von 34 (sechs randständige Quartiere), Luftlinien-Approximation. **Wir wissen, was wir nicht wissen.**
+
+### Slide 18 — Ausblick & Dank  *(20 s)*
+> „Nächste Iterationen: ÖV-Reisezeiten via SBB GTFS, dynamisches Re-Scoring bei neuen POIs in einer QGIS-Live-Demo, und nationaler Vergleich mit Winterthur und Basel. Vielen Dank — wir freuen uns auf eure Fragen."
 
 ---
 
@@ -88,7 +90,7 @@
 > Der OSM-Polygon für Hottingen umfasst möglicherweise nur den oberen, residentiellen Teil — nicht das belebte Römerhof-Areal. Mit der offiziellen Stadt-Zürich-Geometrie hätten wir wahrscheinlich ein anderes Bild. Auch das ist auf Slide 16 als Limitation enthalten.
 
 **„Warum nicht echte Walking-Distanzen statt Luftlinie?"**
-> Wir haben Demo-Isochronen in Notebook 04 für drei Standorte berechnet (zur Validierung). Für 744 Zellen × ~3500 POIs wäre das ~6 Minuten gegenüber 10 Sekunden mit KDTree. Die Korrelation zwischen Luftlinie und Strassengraph-Distanz in Zürich liegt bei 0.94, daher ist die Approximation defensiv vertretbar.
+> Wir haben das empirisch validiert (NB06 Cell 30): für alle 28 Quartier-Centroide haben wir die echte Strassengraph-Distanz zum HB via Dijkstra berechnet und mit der Luftlinie korreliert. **Pearson r = 0.988**, Median-Detour-Faktor 1.20, worst-case 1.41. Die Approximation erklärt 97.6 % der Varianz in echten Walking-Distanzen — defensiv voll vertretbar. Vollberechnung wäre für 744 Zellen × 3500 POIs ~6 Minuten gegenüber 10 Sekunden mit KDTree.
 
 **„Wie geht ihr mit Confoundern um?"** ⭐
 > Genau dafür haben wir den Robustness Check auf Slide 15 gemacht: multivariate Regression mit Distanz, Höhe und POI-Dichte. Distanz bleibt nach Kontrolle signifikant. Die Höhen-Daten sind eine Approximation — eine DEM-basierte Validierung ist im Ausblick (Slide 17).

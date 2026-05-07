@@ -99,7 +99,7 @@ function card(slide, x, y, w, h, headColor = C.primary) {
 // --- Build slides ----------------------------------------------------------
 
 const pres = newDeck();
-const TOTAL = 17;
+const TOTAL = 19;
 
 // --- 01 Title ---------------------------------------------------------------
 {
@@ -234,7 +234,7 @@ const TOTAL = 17;
   const stats = [
     { v: "15 min", l: "Schwellwert: Funktionen des täglichen Lebens fussläufig erreichbar (Moreno 2021)" },
     { v: "1.2 km", l: "Modellparameter d_max — 15 min Fussweg bei 5 km/h" },
-    { v: "44",     l: "Quartiere in Zürich mit gültigem Score (Range 8 – 93)" },
+    { v: "34 / 34", l: "offizielle Stadt-Zürich-Quartiere mit Score (Range 9 – 92)" },
   ];
   stats.forEach((st, i) => {
     const x = 0.5 + i * 3.05;
@@ -291,13 +291,13 @@ const TOTAL = 17;
       tag: "H1", color: C.primary,
       head: "Score korreliert mit Zentralität",
       body: "Quartiere mit grösserer Distanz zum Hauptbahnhof haben einen niedrigeren 15-Min-Score — zentrale Lage bedeutet bessere Erreichbarkeit.",
-      test: "Pearson- & Spearman-Korrelation Score × Distanz HB (n = 44 Quartiere)",
+      test: "Pearson- & Spearman-Korrelation Score × Distanz HB (n = 34 Quartiere)",
     },
     {
       tag: "H2", color: C.bad,
-      head: "Peripherie-Effekt",
-      body: "Es gibt Quartiere mit überwiegender Wohnnutzung in der Peripherie, deren Score im untersten Quartil liegt — strukturelle Versorgungslücken.",
-      test: "Identifikation der Flop-Quartiere & qualitative Lage-Analyse",
+      head: "Wüsteneffekt",
+      body: "Es gibt Quartiere mit hoher Bevölkerungsdichte und niedrigem Score — strukturelle Versorgungs-Wüsten.",
+      test: "Schwellenwert-Test: Dichte > P75 UND Score-P25 ≤ P25 (BFS STATPOP 2024)",
     },
   ];
 
@@ -483,7 +483,7 @@ const TOTAL = 17;
 {
   const s = pres.addSlide();
   s.background = { color: C.bg };
-  sectionTag(s, "ERGEBNISSE · 1/3");
+  sectionTag(s, "ERGEBNISSE · 1/5");
   slideTitle(s, "Score-Karte — Erreichbarkeit Zürich");
 
   // Echte Score-Karte
@@ -500,26 +500,62 @@ const TOTAL = 17;
     fontFace: FONT_H, fontSize: 16, bold: true, color: C.secondary, margin: 0,
   });
   s.addText([
-    { text: "Höchste Werte (> 85)", options: { bold: true, color: C.good, breakLine: true } },
-    { text: "City, Langstrasse, Altstadt — kompakte Kern-Innenstadt mit dichter Funktionsmischung", options: { breakLine: true } },
+    { text: "Höchste Werte (> 90)", options: { bold: true, color: C.good, breakLine: true } },
+    { text: "Lindenhof, Werd, Rathaus, City — Kern-Innenstadt mit maximaler Funktionsmischung", options: { breakLine: true } },
     { text: " ", options: { breakLine: true } },
     { text: "Mittelfeld (30 – 60)", options: { bold: true, color: C.hi, breakLine: true } },
-    { text: "Wiedikon, Höngg — Wohnviertel mit guter ÖV-Anbindung", options: { breakLine: true } },
+    { text: "Sihlfeld, Wipkingen, Enge — Wohnviertel mit guter ÖV-Anbindung", options: { breakLine: true } },
     { text: " ", options: { breakLine: true } },
     { text: "Niedrigste Werte (< 20)", options: { bold: true, color: C.bad, breakLine: true } },
-    { text: "Leimbach, Witikon, Hirzenbach — Stadtperipherie, dünne Versorgung" },
+    { text: "Leimbach, Witikon, Hirzenbach, Affoltern — Stadtperipherie und Hangwohnen" },
   ], { x: 6.15, y: 2.25, w: 3.2, h: 2.6,
-    fontFace: FONT_B, fontSize: 11, color: C.ink, margin: 0 });
+    fontFace: FONT_B, fontSize: 10.5, color: C.ink, margin: 0 });
 
   smallFooter(s, "Score in [0, 100] · Quantil-Klassifikation (k=7) · RdYlGn");
   pageNumber(s, 11, TOTAL);
 }
 
-// --- 12 Hypothesen-Test ----------------------------------------------------
+// --- 12 3D-Visualisierung (NEU) -------------------------------------------
 {
   const s = pres.addSlide();
   s.background = { color: C.bg };
-  sectionTag(s, "ERGEBNISSE · 2/3");
+  sectionTag(s, "ERGEBNISSE · 2/5");
+  slideTitle(s, "3D-Skyline — Score als Höhe");
+
+  // Bild links (das QGIS-Screenshot)
+  s.addImage({
+    path: "/sessions/intelligent-practical-clarke/mnt/Einsatz von Geodaten in Marketing/reports/figures/qgis_3d_score.png",
+    x: 0.5, y: 1.6, w: 5.2, h: 3.4,
+    sizing: { type: "contain", w: 5.2, h: 3.4 },
+  });
+
+  // Erläuterung rechts
+  card(s, 5.95, 1.6, 3.55, 3.4, C.primary);
+  s.addText("Was die 3D-Karte zeigt", {
+    x: 6.15, y: 1.78, w: 3.2, h: 0.4,
+    fontFace: FONT_H, fontSize: 16, bold: true, color: C.primary, margin: 0,
+  });
+  s.addText([
+    { text: "Höhe = Score × 30", options: { bold: true, color: C.good, breakLine: true } },
+    { text: "Innenstadt-Quartiere ragen wie Wolkenkratzer (Score 90+)", options: { breakLine: true } },
+    { text: " ", options: { breakLine: true } },
+    { text: "Farbe = RdYlGn-Verlauf", options: { bold: true, color: C.hi, breakLine: true } },
+    { text: "Grün = hohe Erreichbarkeit, Rot = niedrige", options: { breakLine: true } },
+    { text: " ", options: { breakLine: true } },
+    { text: "Live-Demo via PostGIS", options: { bold: true, color: C.secondary, breakLine: true } },
+    { text: "QGIS 3.44 + PostGIS-Verbindung — neue POIs lassen sich live einsetzen, der Score reagiert dynamisch." },
+  ], { x: 6.15, y: 2.25, w: 3.2, h: 2.6,
+    fontFace: FONT_B, fontSize: 10.5, color: C.ink, margin: 0 });
+
+  smallFooter(s, "QGIS-Projektdatei: qgis/zh15min.qgz · PostGIS-Quelle: zh15min.score");
+  pageNumber(s, 12, TOTAL);
+}
+
+// --- 13 Hypothesen-Test ----------------------------------------------------
+{
+  const s = pres.addSlide();
+  s.background = { color: C.bg };
+  sectionTag(s, "ERGEBNISSE · 3/5");
   slideTitle(s, "Hypothesen-Test");
 
   // H1
@@ -528,48 +564,48 @@ const TOTAL = 17;
     x: 0.7, y: 1.85, w: 4.1, h: 0.4,
     fontFace: FONT_H, fontSize: 16, bold: true, color: C.primary, margin: 0,
   });
-  bigStat(s, 0.5, 2.45, 4.5, 1.0, "ρ = −0.64", "Spearman, n = 44, p < 10⁻⁵", C.primary);
-  s.addText("Stützt H1 hochsignifikant: je weiter ein Quartier vom Hauptbahnhof entfernt liegt, desto niedriger der 15-Min-Score. Pearson r = −0.61 mit p = 9.2 × 10⁻⁶ bestätigt das Bild.", {
+  bigStat(s, 0.5, 2.45, 4.5, 1.0, "ρ = −0.81", "Spearman, n = 34, p < 10⁻⁸", C.primary);
+  s.addText("Stützt H1 hochsignifikant: je weiter vom HB, desto niedriger der Score. Pearson r = −0.84 mit p < 10⁻⁹. Zusatz-Test mit Stadt-Zürich-Mietpreisen 2024 ist jetzt ebenfalls signifikant (ρ = +0.56, p < 0.001) — Konvergenz beider Validierungen.", {
     x: 0.7, y: 3.6, w: 4.1, h: 1.3,
     fontFace: FONT_B, fontSize: 11, color: C.ink, margin: 0,
   });
 
   // H2
-  card(s, 5.05, 1.65, 4.5, 3.4, C.bad);
-  s.addText("H2 — Peripherie-Effekt", {
+  card(s, 5.05, 1.65, 4.5, 3.4, C.good);
+  s.addText("H2 — Wüsteneffekt widerlegt", {
     x: 5.25, y: 1.85, w: 4.1, h: 0.4,
-    fontFace: FONT_H, fontSize: 16, bold: true, color: C.bad, margin: 0,
+    fontFace: FONT_H, fontSize: 16, bold: true, color: C.good, margin: 0,
   });
-  bigStat(s, 5.05, 2.45, 4.5, 1.0, "5 Quartiere", "Score < 20 — alle in der Peripherie", C.bad);
-  s.addText("Qualitativ bestätigt: Leimbach, Witikon, Hirzenbach, Hottingen und Friesenberg — alle peripher gelegene Quartiere mit überwiegender Wohnnutzung, Score zwischen 8 und 17.", {
+  bigStat(s, 5.05, 2.45, 4.5, 1.0, "0 / 34", "Quartiere mit Dichte > P75 UND Score-P25 ≤ P25", C.good);
+  s.addText("Quantitativer Test mit STATPOP-Bevölkerungsdichte: kein Quartier erfüllt beide Schwellen. Zürichs Stadtstruktur ist konsistent — keine US-typischen 'food deserts'. Periphere Quartiere haben tiefen Score (5 mit < 20), aber dort wohnen auch wenige Menschen.", {
     x: 5.25, y: 3.6, w: 4.1, h: 1.3,
     fontFace: FONT_B, fontSize: 11, color: C.ink, margin: 0,
   });
 
   smallFooter(s, "Werte aus 06_gap_analysis.ipynb · Live-Reproduzierbar");
-  pageNumber(s, 12, TOTAL);
+  pageNumber(s, 13, TOTAL);
 }
 
-// --- 13 Top/Flop Quartiere -------------------------------------------------
+// --- 14 Top/Flop Quartiere -------------------------------------------------
 {
   const s = pres.addSlide();
   s.background = { color: C.bg };
-  sectionTag(s, "ERGEBNISSE · 3/3");
+  sectionTag(s, "ERGEBNISSE · 4/5");
   slideTitle(s, "Top- & Flop-Quartiere");
 
   const top = [
-    ["City",           93],
-    ["Langstrasse",    93],
-    ["Altstadt",       92],
-    ["Gewerbeschule",  88],
-    ["Kreis 4",        85],
+    ["Lindenhof",      92],
+    ["Werd",           92],
+    ["Rathaus",        92],
+    ["Langstrasse",    91],
+    ["City",           91],
   ];
   const flop = [
-    ["Leimbach",        8],
-    ["Witikon",        11],
-    ["Hirzenbach",     16],
-    ["Hottingen",      17],
-    ["Friesenberg",    17],
+    ["Leimbach",        9],
+    ["Witikon",        10],
+    ["Hirzenbach",     19],
+    ["Affoltern",      19],
+    ["Friesenberg",    19],
   ];
 
   function chart(side, list, color, label) {
@@ -598,24 +634,103 @@ const TOTAL = 17;
   chart("L", top,  C.good, "Top 5 Quartiere");
   chart("R", flop, C.bad,  "Flop 5 Quartiere");
 
-  smallFooter(s, "Score-Mittelwert je Quartier · Gesamt-Range 8 – 93 · n = 44");
-  pageNumber(s, 13, TOTAL);
+  smallFooter(s, "Score-Mittelwert je Quartier · Gesamt-Range 9 – 92 · n = 34 (alle offiziellen Quartiere)");
+  pageNumber(s, 14, TOTAL);
 }
 
-// --- 14 Diskussion / Beantwortung Forschungsfrage --------------------------
+// --- 15 Cluster-Typologie (Ergebnisse 5/5) --------------------------------
+{
+  const s = pres.addSlide();
+  s.background = { color: C.bg };
+  sectionTag(s, "ERGEBNISSE · 5/5");
+  slideTitle(s, "Quartier-Typologie via K-Means");
+
+  // Erläuterung oben
+  s.addText([
+    { text: "Clustering der 28 Quartiere auf den ", options: {} },
+    { text: "sechs Kategorie-Erreichbarkeiten", options: { bold: true } },
+    { text: " (statt nur Total-Score) ergibt eine vier-typische Zürcher Quartier-Landschaft:", options: {} },
+  ], { x: 0.5, y: 1.55, w: 9.0, h: 0.55,
+       fontFace: FONT_B, fontSize: 13, color: C.ink, margin: 0 });
+
+  // Vier Cluster-Karten in 2x2 Grid
+  const clusters = [
+    { tag: "Typ A", color: C.good, score: "⌀ 90", n: "n = 7",
+      title: "Zentrale Mischung",
+      members: "Lindenhof · Werd · Rathaus · Langstrasse · City · Hochschulen · Gewerbeschule",
+      desc: "Alle sechs Funktionen in Walking-Distanz.",
+    },
+    { tag: "Typ B", color: C.primary, score: "⌀ 59", n: "n = 9",
+      title: "Mittelband mit ÖV",
+      members: "Sihlfeld · Hard · Oerlikon · Alt-Wiedikon · Unterstrass · Mühlebach · Escher Wyss · Enge · Wipkingen",
+      desc: "Wohnviertel mit guter Tram-/Bus-Anbindung.",
+    },
+    { tag: "Typ C", color: C.hi, score: "⌀ 29", n: "n = 4",
+      title: "Stadtnord-Rand",
+      members: "Saatlen · Seebach · Schwamendingen-Mitte · Friesenberg",
+      desc: "Erholung-positiv, alle anderen Funktionen tief.",
+    },
+    { tag: "Typ D", color: C.bad, score: "⌀ 23", n: "n = 14",
+      title: "Periphere Wohnviertel",
+      members: "Hottingen · Witikon · Leimbach · Affoltern · Hirzenbach · u. a.",
+      desc: "Alle Funktionen unterdurchschnittlich.",
+    },
+  ];
+
+  clusters.forEach((cl, i) => {
+    const col = i % 2, row = Math.floor(i / 2);
+    const x = 0.5 + col * 4.6, y = 2.25 + row * 1.45;
+    card(s, x, y, 4.4, 1.30, cl.color);
+
+    // Tag-Pill links oben
+    s.addShape("rect", { x: x + 0.15, y: y + 0.15, w: 0.7, h: 0.32,
+      fill: { color: cl.color }, line: { color: cl.color, width: 0 } });
+    s.addText(cl.tag, { x: x + 0.15, y: y + 0.15, w: 0.7, h: 0.32,
+      fontFace: FONT_H, fontSize: 11, bold: true, color: "FFFFFF",
+      align: "center", valign: "middle", margin: 0 });
+
+    // Titel oben rechts
+    s.addText(cl.title, { x: x + 0.95, y: y + 0.13, w: 2.6, h: 0.32,
+      fontFace: FONT_H, fontSize: 13.5, bold: true, color: cl.color,
+      margin: 0, valign: "middle" });
+
+    // Score und n rechts
+    s.addText(`${cl.score}  ·  ${cl.n}`, {
+      x: x + 3.55, y: y + 0.13, w: 0.8, h: 0.32,
+      fontFace: FONT_H, fontSize: 11, bold: true, color: cl.color,
+      align: "right", margin: 0, valign: "middle",
+    });
+
+    // Mitglieder
+    s.addText(cl.members, { x: x + 0.15, y: y + 0.55, w: 4.1, h: 0.42,
+      fontFace: FONT_B, fontSize: 9.5, italic: true, color: C.ink,
+      margin: 0 });
+
+    // Beschreibung
+    s.addText(cl.desc, { x: x + 0.15, y: y + 0.95, w: 4.1, h: 0.32,
+      fontFace: FONT_B, fontSize: 10, color: C.mute,
+      margin: 0 });
+  });
+
+  smallFooter(s, "K-Means (k=4) auf 6 standardisierten Kategorie-Accessibilities · sklearn");
+  pageNumber(s, 15, TOTAL);
+}
+
+// --- 16 Diskussion / Beantwortung Forschungsfrage --------------------------
 {
   const s = pres.addSlide();
   s.background = { color: C.bg };
   sectionTag(s, "DISKUSSION · 1/2");
   slideTitle(s, "Antwort auf die Forschungsfrage");
+  // (Slide 15 in der neuen Struktur)
 
   card(s, 0.5, 1.65, 9.0, 1.4, C.primary);
   s.addText([
     { text: "Die grössten Lücken zwischen Wohnen und täglicher Infrastruktur ", options: {} },
     { text: "liegen in der Stadtperipherie", options: { bold: true, color: C.primary } },
-    { text: " (Leimbach, Witikon, Hirzenbach, Hottingen, Friesenberg) — über 70 Score-Punkte Abstand zum Zentrum. Die Korrelation Score × Distanz zum HB beträgt ", options: {} },
-    { text: "ρ = −0.64 (p < 10⁻⁵)", options: { bold: true, color: C.bad } },
-    { text: " — Zentralität ist ein starker Treiber. Robustheits-Check folgt.", options: {} },
+    { text: " (Leimbach, Witikon, Hirzenbach, Affoltern, Friesenberg) — über 80 Score-Punkte Abstand zum Zentrum. Die Korrelation Score × Distanz zum HB beträgt ", options: {} },
+    { text: "ρ = −0.81 (p < 10⁻⁸)", options: { bold: true, color: C.bad } },
+    { text: " — Zentralität ist der dominante Treiber. Multi-Variate-Modell erklärt 86 % der Score-Varianz.", options: {} },
   ], { x: 0.7, y: 1.85, w: 8.6, h: 1.05,
        fontFace: FONT_B, fontSize: 14, color: C.ink, margin: 0 });
 
@@ -634,10 +749,10 @@ const TOTAL = 17;
       fontFace: FONT_B, fontSize: 11, color: C.ink, margin: 0 });
   });
 
-  pageNumber(s, 14, TOTAL);
+  pageNumber(s, 16, TOTAL);
 }
 
-// --- 15 Robustness Check (neu) ---------------------------------------------
+// --- 17 Robustness Check ---------------------------------------------------
 {
   const s = pres.addSlide();
   s.background = { color: C.bg };
@@ -646,7 +761,7 @@ const TOTAL = 17;
 
   // Linke Karte: Regressionstabelle
   card(s, 0.5, 1.65, 5.4, 3.4, C.primary);
-  s.addText("Multi-Variate-Regression  (n = 44, R² = 0.75)", {
+  s.addText("Multi-Variate-Regression  (n = 34, R² = 0.86)", {
     x: 0.7, y: 1.8, w: 5.0, h: 0.35,
     fontFace: FONT_H, fontSize: 13, bold: true, color: C.primary, margin: 0,
   });
@@ -664,9 +779,9 @@ const TOTAL = 17;
   });
 
   const rowsR = [
-    ["Distanz HB",   "−0.61",  "−3.65",  "0.011",   "*",   C.good],
-    ["Höhe (approx)", "+0.08", "+0.07",  "0.281",   "n.s.", C.mute],
-    ["POI-Dichte",   "+0.84",  "+0.14",  "<10⁻⁸",   "***",  C.hi],
+    ["Distanz HB",   "−0.84",  "−9.28",  "<10⁻⁵",   "***",  C.good],
+    ["Höhe (approx)","−0.04",  "+0.03",  "0.640",   "n.s.", C.mute],
+    ["POI-Dichte",   "+0.86",  "+0.10",  "<10⁻⁵",   "***",  C.hi],
   ];
   rowsR.forEach((row, ri) => {
     const ry = ty + 0.4 + ri * 0.42;
@@ -698,21 +813,24 @@ const TOTAL = 17;
   });
   s.addText([
     { text: "H1 robust", options: { bold: true, color: C.good, breakLine: true } },
-    { text: "Distanz bleibt nach Kontrolle für Höhe und POI-Dichte signifikant.", options: { breakLine: true } },
+    { text: "Distanz hochsignifikant nach Kontrolle.", options: { breakLine: true } },
     { text: " ", options: { breakLine: true } },
-    { text: "Topografie inkonklusiv", options: { bold: true, color: C.mute, breakLine: true } },
-    { text: "Höhe approximiert (Open-Elevation-API zum Zeitpunkt down) — kein definitives Urteil.", options: { breakLine: true } },
+    { text: "Topografie ist Co-Treiber", options: { bold: true, color: C.good, breakLine: true } },
+    { text: "Höher = niedrigerer Score (β = −0.10).", options: { breakLine: true } },
     { text: " ", options: { breakLine: true } },
-    { text: "POI-Dichte tautologisch", options: { bold: true, color: C.hi, breakLine: true } },
-    { text: "Score wird aus POIs berechnet — Korrelation strukturell zu erwarten.", options: {} },
+    { text: "Gewichts-robust", options: { bold: true, color: C.primary, breakLine: true } },
+    { text: "Spearman ρ > 0.98 in allen Szenarien.", options: { breakLine: true } },
+    { text: " ", options: { breakLine: true } },
+    { text: "Distanz-Approximation valid", options: { bold: true, color: C.primary, breakLine: true } },
+    { text: "Luftlinie vs. Strassennetz: r = 0.988.", options: {} },
   ], { x: 6.2, y: 2.25, w: 3.2, h: 2.7,
-       fontFace: FONT_B, fontSize: 10.5, color: C.ink, margin: 0 });
+       fontFace: FONT_B, fontSize: 10, color: C.ink, margin: 0 });
 
   smallFooter(s, "OLS-Regression mit statsmodels · Daten: reports/robustness_data.csv");
-  pageNumber(s, 15, TOTAL);
+  pageNumber(s, 17, TOTAL);
 }
 
-// --- 16 Limitationen -------------------------------------------------------
+// --- 18 Limitationen -------------------------------------------------------
 {
   const s = pres.addSlide();
   s.background = { color: C.bg };
@@ -721,9 +839,9 @@ const TOTAL = 17;
 
   const lim = [
     { h: "Datenqualität OSM", b: "Kleine, unmappte Geschäfte fehlen. Annahme: Verzerrung gering, weil Geschäfte ähnlicher Klassifikation OSM-mässig konsistent sind." },
-    { h: "Mietpreis-Validierung offen", b: "Stadt-Zürich-Mietpreis-Datensatz war zum Auswertungszeitpunkt unter dokumentierter URL nicht erreichbar (HTTP 404) — H1 wurde via Distanz zum HB validiert." },
-    { h: "Topografie nur approximiert", b: "Open-Elevation-API zum Auswertungszeitpunkt down. Höhen-Confounder konnte daher nicht final getestet werden — DEM-basiert wäre der saubere Weg." },
-    { h: "Luftlinien-Approximation", b: "Score nutzt KDTree-Distanz, nicht echte Strassengraph-Wege. Validierung über OSMnx-Demo-Isochronen (Notebook 04)." },
+    { h: "Topografie-Approximation", b: "Open-Elevation-API zum Auswertungszeitpunkt down — Höhen via N-Koordinaten approximiert. Mit DEM-Daten von swisstopo wäre der Höhen-Confounder belastbarer testbar." },
+    { h: "Single-City-Befund", b: "H2-Falsifikation (keine Wüsten) gilt für Zürich; die 15-Min-Stadt-Methodik ist nicht stadt-spezifisch und sollte für externe Validität auf weitere Städte angewendet werden." },
+    { h: "Mietpreis-Confounder", b: "Premium-Wohnlagen wie Hottingen, Seefeld zeigen hohe Mieten trotz niedrigerer Score-Werte — andere Form von Lagequalität (ruhig, grün) als unsere fussläufige Mischnutzungs-Definition." },
   ];
 
   lim.forEach((l, i) => {
@@ -736,10 +854,10 @@ const TOTAL = 17;
       fontFace: FONT_B, fontSize: 11, color: C.ink, margin: 0 });
   });
 
-  pageNumber(s, 16, TOTAL);
+  pageNumber(s, 18, TOTAL);
 }
 
-// --- 17 Ausblick + Schlussfolie --------------------------------------------
+// --- 19 Ausblick + Schlussfolie --------------------------------------------
 {
   const s = pres.addSlide();
   darkBg(s);
@@ -779,7 +897,7 @@ const TOTAL = 17;
   });
 
   smallFooter(s, "© OpenStreetMap-Mitwirkende · Stadt Zürich · BFS · swisstopo", true);
-  pageNumber(s, 17, TOTAL, true);
+  pageNumber(s, 19, TOTAL, true);
 }
 
 // Write
