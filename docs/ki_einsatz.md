@@ -28,6 +28,21 @@ KI hat uns die korrekten WFS-Endpunkte für Stadt Zürich Open Data und den BFS-
 
 Frage: „Welcher Distance-Decay-Parameter ist für Walking-Erreichbarkeit angemessen?" → Empfehlung Huff-Modell mit β ≈ 1.5 (siehe Huff 1964; Sevtsuk & Mekonnen 2012). Wir haben die Empfehlung in `src/zh15min/config.py:HUFF_BETA` als Parameter exponiert, sodass eine Sensitivitäts-Analyse möglich ist.
 
+### 2.5 Topografische Score-Erweiterung
+
+Aufgabenstellung: „Wir wollen den flachen 5-km/h-Score topografisch korrigieren — was ist die saubere Architektur?" → KI hat einen 4-Schritt-Plan entworfen:
+
+1. **`src/zh15min/elevation.py`** — Höhen-Anreicherung des OSMnx-Graphs aus dem SwissALTI3D-DEM. Inklusive Reprojektion WGS84→LV95 via pyproj-Transformer und vektorisiertem `rasterio.sample()` für 60'000+ Knoten.
+2. **`src/zh15min/isochron.py`** — Tobler-Hiking-Funktion `W = 6·exp(-3.5·|s + 0.05|)` als zusätzliche Kanten-Gewichtung, **additiv** zum bestehenden flat-Pfad. Slope-Clipping bei ±50 % gegen OSM-Treppen-Artefakte (392 % Maxima durch übereinander liegende Edge-Endpunkte).
+3. **`src/zh15min/score_network.py`** — POI-zentriertes `single_source_dijkstra_path_length` mit 15-Min-Cutoff statt zell-zentriertem KDTree (1000× Dijkstras statt 12000× pro Zelle). Ergebnis: 33 s für 8092 POIs auf 744 Hex-Zellen.
+4. **`notebooks/06b_delta.ipynb`** — Δ-Visualisierung mit drei Karten und Quartier-Ranking.
+
+KI-Beitrag: Architektur-Vorschlag, Tobler-Formel-Implementierung, Performance-Optimierung (vektorisierter Inner-Loop via `pd.Series.reindex` statt Python-`for`-Schleife). Wir haben den Code anhand von 9 Pytest-Cases verifiziert (Tobler-Maximum bei −5 %, Bergauf-Bergab-Asymmetrie, Slope-Clipping, None-Fallback, Graph-Integration) — alle Tests grün. Plausibilitätsbefund auf 34 Quartieren (Top-Verlierer Oberstrass −13.8, Fluntern −11.2; Top-Gewinner Mühlebach +8.5, Seefeld +6.3) entspricht der Topografie Zürichs — die KI-vorgeschlagene Implementierung verhält sich wie erwartet.
+
+### 2.6 Slide-Deck-Generation
+
+`scripts/build_slides.js` ist ein pptxgenjs-Generator, der das 20-folige Deck reproduzierbar aus Code erstellt (statt manueller PowerPoint-Bearbeitung). KI hat das Layout-Framework (Cards, Section-Tags, Big-Stats, Footer) entworfen; Inhalte sind manuell überprüft, jede Datenaussage gegen das jeweilige Notebook-Output-Cell verglichen.
+
 ## 3. Was wir nicht durch KI machen lassen
 
 - Keine vollautomatische **Interpretation** der Resultate. Schlussfolgerungen schreiben wir selbst.
@@ -36,4 +51,6 @@ Frage: „Welcher Distance-Decay-Parameter ist für Walking-Erreichbarkeit angem
 
 ## 4. Reflexion
 
-KI hat uns geschätzt **~15 Stunden Code-Schreiben** und **~5 Stunden Datenquellen-Recherche** erspart. Inhaltlich-fachliche Entscheidungen (Hypothesen, Diskussion, Limitationen) sind weiterhin menschengemacht — die KI dient als Beschleuniger, nicht als Autor.
+KI hat uns geschätzt **~25 Stunden Code-Schreiben** (inkl. ~10 h für die topografische Erweiterung mit Tobler + SwissALTI3D), **~5 Stunden Datenquellen-Recherche** und **~3 Stunden Slide-Deck-Layout** erspart. Inhaltlich-fachliche Entscheidungen (Hypothesen, Diskussion, Limitationen, Schlussfolgerungen) sind weiterhin menschengemacht — die KI dient als Beschleuniger, nicht als Autor.
+
+**Verifizierungs-Disziplin:** Jede KI-generierte Komponente ist gegen mindestens eine externe Realität geprüft worden — Pytest-Cases für Code, Plausibilitäts-Tests für Score-Verteilungen (Median, P95, Range), Quartier-Pattern-Vergleich für Topo-Effekte (Hangzonen verlieren, See-Quartiere gewinnen), und manueller Vergleich von Slide-Inhalten mit Notebook-Outputs. Wir haben keinen einzelnen KI-Output ungeprüft übernommen.
