@@ -80,7 +80,7 @@
 > „Die grössten Lücken liegen in der Peripherie. Drei Implikationen: für die Stadtplanung Versorgungs-Auflagen in Entwicklungsgebieten, für Investoren preisliche Chancen mit Vermarktungsrisiko, für den Einzelhandel klare Expansions-Targets. **Aber Vorsicht: Korrelation ≠ Kausalität — schauen wir uns mögliche Confounder an.**"
 
 ### Slide 18 — Robustness Check  *(40 s)*  ⭐
-> *(Auf die drei Status-Tags zeigen)* „Die multivariate Regression mit Distanz, Höhe und POI-Dichte erklärt **82 % der Score-Varianz**. Die Distanz zum HB bleibt **auch nach Kontrolle der Confounder hochsignifikant** — β = −7.91, p < 0.001. **Topografie ist tatsächlich ein Co-Treiber**: höher gelegen = niedrigerer Score, β = −0.10 bei p = 0.004. Damit beantworten wir das Feedback unseres Dozenten direkt: Topografie ist real, aber Distanz erklärt zusätzlich Effekt. Und unsere Sensitivitäts-Analyse zeigt: Spearman-Rang-Korrelation der Quartier-Reihenfolge bleibt über 0.98 in allen Gewichts-Szenarien — das Ranking ist methodologisch robust."
+> *(Auf die drei Status-Tags zeigen)* „Die multivariate Regression mit Distanz, Höhe (echte SwissALTI3D-Werte) und POI-Dichte erklärt **91 % der Score-Varianz** — adj. R² = 0.90. Die Distanz zum HB bleibt **auch nach Kontrolle der Confounder hochsignifikant** — β = −9.52, p < 10⁻⁶. **Topografie ist tatsächlich ein Co-Treiber**: höher gelegen = niedrigerer Score, β = −0.107 bei p < 10⁻³. POI-Dichte als dritter Prädiktor ebenfalls signifikant positiv (β = +0.069). Damit beantworten wir das Feedback unseres Dozenten direkt: Topografie ist real, Distanz und POI-Dichte aber erklären zusätzlich. Und unsere Sensitivitäts-Analyse zeigt: Spearman-Rang-Korrelation der Quartier-Reihenfolge bleibt über 0.98 in allen Gewichts-Szenarien — das Ranking ist methodologisch robust."
 > *(Don't forget: dieses Slide ist die wissenschaftliche Stärke des Projekts — Zeit hier ruhig nehmen.)*
 
 ### Slide 19 — Limitationen  *(25 s)*
@@ -103,13 +103,13 @@
 > Wir haben das empirisch validiert (NB06 Cell 30): für alle 34 Quartier-Centroide haben wir die echte Strassengraph-Distanz zum HB via Dijkstra berechnet und mit der Luftlinie korreliert. **Pearson r = 0.988**, Median-Detour-Faktor 1.20, worst-case 1.41. Die Approximation erklärt 97.6 % der Varianz in echten Walking-Distanzen — defensiv voll vertretbar. **Plus** wir haben mit der Tobler-Erweiterung (Slide 13) zusätzlich die topografisch korrekte Variante geliefert — beide Ansätze sind im Repo.
 
 **„Wie geht ihr mit Confoundern um?"** ⭐
-> Genau dafür haben wir den Robustness Check auf Slide 18 gemacht: multivariate Regression mit Distanz, Höhe und POI-Dichte. Distanz bleibt nach Kontrolle signifikant (β = −7.91, p < 0.001). Topografie ist Co-Treiber (β = −0.10, p = 0.004). **Plus** der eigenständige topografische Score auf Slide 13 zeigt das Pattern direkt visuell — Hangzonen verlieren exakt das, was die Regression vorhersagt.
+> Genau dafür haben wir den Robustness Check auf Slide 18 gemacht: multivariate Regression mit Distanz, Höhe (SwissALTI3D-DEM) und POI-Dichte. R² = 0.91 (adj. 0.90). Distanz bleibt nach Kontrolle hochsignifikant (β = −9.52, p < 10⁻⁶). Topografie ist Co-Treiber (β = −0.107, p < 10⁻³). **Plus** der eigenständige topografische Score auf Slide 13 zeigt das Pattern direkt visuell — Hangzonen verlieren exakt das, was die Regression vorhersagt.
 
 **„Tobler — ist das die richtige Wahl für eine Stadt?"**
 > Tobler ist seit 1993 der Standard für topografisches Routing und passt für menschliches Gehverhalten (Maximum bei −5 % Steigung mit 6 km/h, exponentieller Abfall bei steileren Gradienten). Bei flachem Gelände ergibt Tobler ~5.04 km/h, also kompatibel mit unserer flachen Annahme. Wir clippen extreme Steigungen über 50 %, weil das in OSM Treppen-Artefakte sind, nicht echte Strassen.
 
 **„Mietpreis-Test — H1 ist signifikant, aber was ist mit Confoundern?"**
-> Der bivariate Spearman ρ = +0.56 ist erstmal nur eine Korrelation. Die multivariate Kontrolle kommt auf Slide 18: Distanz, Höhe und POI-Dichte erklären zusammen 82 % der Score-Varianz. Mietpreise hängen aber nicht nur am Score — Premium-Wohnlagen wie Hottingen und Seefeld haben hohe Mieten OHNE POI-Dichte (ruhige + grüne Lage als alternative „gute Lage"-Definition). Diese Limitation steht auf Slide 19.
+> Der bivariate Spearman ρ = +0.56 ist erstmal nur eine Korrelation. Die multivariate Kontrolle kommt auf Slide 18: Distanz, Höhe und POI-Dichte erklären zusammen 91 % der Score-Varianz. Mietpreise hängen aber nicht nur am Score — Premium-Wohnlagen wie Hottingen und Seefeld haben hohe Mieten OHNE POI-Dichte (ruhige + grüne Lage als alternative „gute Lage"-Definition). Diese Limitation steht auf Slide 19.
 
 ---
 

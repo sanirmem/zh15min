@@ -325,16 +325,17 @@ const TOTAL = 20;
   const s = pres.addSlide();
   s.background = { color: C.bg };
   sectionTag(s, "METHODIK · 1/4");
-  slideTitle(s, "Daten — sieben Quellen, ein Modell");
+  slideTitle(s, "Daten — acht Quellen, ein Modell");
 
   const rows = [
     ["OpenStreetMap (OSMnx)",      "POIs (6 Kategorien), Stadtgrenze",  "ODbL"],
     ["Geofabrik PBF",              "vollständiges OSM (Schweiz, optional)", "ODbL"],
     ["Walking-Graph (OSMnx)",      "Strassennetz für Isochronen",        "ODbL"],
-    ["OSM admin_level=10",         "Quartier-Polygone (44 mit Score)",   "ODbL"],
-    ["HB Zürich (LV95-Punkt)",     "Distanz-Referenz für H1-Test",       "—"],
-    ["Open-Elevation API",         "Höhe für Robustness Check (Confounder)", "CC0"],
-    ["swisstopo / GeoAdmin",       "Hintergrundkarten (Folium-Tiles)",   "swisstopo Terms"],
+    ["BFS STATPOP 2023",           "Bevölkerungsdichte (Hektar-Raster)", "Open Data BFS"],
+    ["Stadt Zürich Open Data",     "34 offizielle Quartiere + Mietpreis-Index", "CC BY 4.0"],
+    ["swisstopo SwissALTI3D",      "Höhenmodell 2 m für Tobler-Erweiterung", "swisstopo OGD"],
+    ["swisstopo TileMap",          "Hintergrundkarten (Folium-Tiles)",   "swisstopo Terms"],
+    ["HB Zürich (LV95-Punkt)",     "Distanz-Referenz für H1a-Test",      "—"],
   ];
 
   s.addTable(
@@ -448,24 +449,26 @@ const TOTAL = 20;
   const s = pres.addSlide();
   s.background = { color: C.bg };
   sectionTag(s, "METHODIK · 4/4");
-  slideTitle(s, "Pipeline — sieben Notebooks");
+  slideTitle(s, "Pipeline — neun Notebooks");
 
   const pipe = [
     "01  Stadtgrenze + POIs aus OSM laden (OSMnx)",
-    "02  Walking-Graph + Quartier-Polygone (OSM admin_level=10)",
+    "02  Walking-Graph + STATPOP + Stadt-Zürich-Quartiere (WFS)",
+    "02b Höhen-Anreicherung des Walking-Graphs (SwissALTI3D)",
     "03  Alles in PostGIS (Schema zh15min) importieren",
     "04  Demo-Isochronen + Hex-Gitter (200 m Apothem)",
     "05  Score-Berechnung (KDTree-beschleunigt)",
-    "06  Hypothesen-Test (Score × Distanz HB) + Versorgungslücken",
+    "06  Hypothesen-Test + Versorgungslücken + Robustness Check",
+    "06b Topografischer Score (Tobler) + Δ-Vergleich",
     "07  Folium-Karte + Slide-Figuren",
   ];
 
   // timeline ribbon
-  s.addShape("rect", { x: 0.5, y: 1.95, w: 9.0, h: 0.06,
+  s.addShape("rect", { x: 0.5, y: 1.80, w: 9.0, h: 0.06,
     fill: { color: "E2E8F0" }, line: { color: "E2E8F0", width: 0 } });
 
   pipe.forEach((step, i) => {
-    const y = 2.25 + i * 0.42;
+    const y = 2.05 + i * 0.36;
     s.addShape("ellipse", { x: 0.55, y: y - 0.15, w: 0.32, h: 0.32,
       fill: { color: C.primary }, line: { color: C.primary, width: 0 } });
     s.addText(String(i + 1), { x: 0.55, y: y - 0.15, w: 0.32, h: 0.32,
@@ -832,13 +835,13 @@ const TOTAL = 20;
 
   // Linke Karte: Regressionstabelle
   card(s, 0.5, 1.65, 5.4, 3.4, C.primary);
-  s.addText("Multi-Variate-Regression  (n = 34, R² = 0.86)", {
+  s.addText("Multi-Variate-Regression  (n = 34, R² = 0.91)", {
     x: 0.7, y: 1.8, w: 5.0, h: 0.35,
     fontFace: FONT_H, fontSize: 13, bold: true, color: C.primary, margin: 0,
   });
 
   // Tabellen-Header
-  const tx = 0.7, ty = 2.25, colW = [1.6, 0.95, 0.95, 0.95, 0.7];
+  const tx = 0.7, ty = 2.25, colW = [1.7, 0.95, 0.95, 1.0, 0.6];
   const headers = ["Prädiktor", "bivar. r", "partiell β", "p-Wert", "Status"];
   let cx = tx;
   headers.forEach((h, i) => {
@@ -850,9 +853,9 @@ const TOTAL = 20;
   });
 
   const rowsR = [
-    ["Distanz HB",   "−0.84",  "−9.28",  "<10⁻⁵",   "***",  C.good],
-    ["Höhe (approx)","−0.04",  "+0.03",  "0.640",   "n.s.", C.mute],
-    ["POI-Dichte",   "+0.86",  "+0.10",  "<10⁻⁵",   "***",  C.hi],
+    ["Distanz HB",        "−0.84",  "−9.52",  "<10⁻⁶",   "***",  C.good],
+    ["Höhe (SwissALTI3D)","−0.60",  "−0.107", "<10⁻³",   "***",  C.good],
+    ["POI-Dichte",        "+0.86",  "+0.069", "<10⁻⁴",   "***",  C.hi],
   ];
   rowsR.forEach((row, ri) => {
     const ry = ty + 0.4 + ri * 0.42;
@@ -884,10 +887,10 @@ const TOTAL = 20;
   });
   s.addText([
     { text: "H1 robust", options: { bold: true, color: C.good, breakLine: true } },
-    { text: "Distanz hochsignifikant nach Kontrolle.", options: { breakLine: true } },
+    { text: "Distanz hochsignifikant nach Kontrolle (β = −9.52).", options: { breakLine: true } },
     { text: " ", options: { breakLine: true } },
     { text: "Topografie ist Co-Treiber", options: { bold: true, color: C.good, breakLine: true } },
-    { text: "Höher = niedrigerer Score (β = −0.10).", options: { breakLine: true } },
+    { text: "SwissALTI3D-Höhen: höher = niedrigerer Score (β = −0.107).", options: { breakLine: true } },
     { text: " ", options: { breakLine: true } },
     { text: "Gewichts-robust", options: { bold: true, color: C.primary, breakLine: true } },
     { text: "Spearman ρ > 0.98 in allen Szenarien.", options: { breakLine: true } },
@@ -910,7 +913,7 @@ const TOTAL = 20;
 
   const lim = [
     { h: "Datenqualität OSM", b: "Kleine, unmappte Geschäfte fehlen. Annahme: Verzerrung gering, weil Geschäfte ähnlicher Klassifikation OSM-mässig konsistent sind." },
-    { h: "Topografie-Approximation", b: "Open-Elevation-API zum Auswertungszeitpunkt down — Höhen via N-Koordinaten approximiert. Mit DEM-Daten von swisstopo wäre der Höhen-Confounder belastbarer testbar." },
+    { h: "Tobler-Modell-Annahme", b: "Die Tobler-Hiking-Funktion ist auf Wandern in offenem Gelände kalibriert (Tobler 1993), nicht auf städtisches Gehen mit Ampeln und Querstrassen. Der relative Unterschied flat vs. topografisch (Slide 13) bleibt aber aussagekräftig." },
     { h: "Single-City-Befund", b: "H2-Falsifikation (keine Wüsten) gilt für Zürich; die 15-Min-Stadt-Methodik ist nicht stadt-spezifisch und sollte für externe Validität auf weitere Städte angewendet werden." },
     { h: "Mietpreis-Confounder", b: "Premium-Wohnlagen wie Hottingen, Seefeld zeigen hohe Mieten trotz niedrigerer Score-Werte — andere Form von Lagequalität (ruhig, grün) als unsere fussläufige Mischnutzungs-Definition." },
   ];
