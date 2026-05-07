@@ -99,7 +99,7 @@ function card(slide, x, y, w, h, headColor = C.primary) {
 // --- Build slides ----------------------------------------------------------
 
 const pres = newDeck();
-const TOTAL = 19;
+const TOTAL = 20;
 
 // --- 01 Title ---------------------------------------------------------------
 {
@@ -483,7 +483,7 @@ const TOTAL = 19;
 {
   const s = pres.addSlide();
   s.background = { color: C.bg };
-  sectionTag(s, "ERGEBNISSE · 1/5");
+  sectionTag(s, "ERGEBNISSE · 1/6");
   slideTitle(s, "Score-Karte — Erreichbarkeit Zürich");
 
   // Echte Score-Karte
@@ -519,7 +519,7 @@ const TOTAL = 19;
 {
   const s = pres.addSlide();
   s.background = { color: C.bg };
-  sectionTag(s, "ERGEBNISSE · 2/5");
+  sectionTag(s, "ERGEBNISSE · 2/6");
   slideTitle(s, "3D-Skyline — Score als Höhe");
 
   // Bild links (das QGIS-Screenshot)
@@ -551,11 +551,82 @@ const TOTAL = 19;
   pageNumber(s, 12, TOTAL);
 }
 
-// --- 13 Hypothesen-Test ----------------------------------------------------
+// --- 13 Topografische Erweiterung (Tobler + Delta) ------------------------
 {
   const s = pres.addSlide();
   s.background = { color: C.bg };
-  sectionTag(s, "ERGEBNISSE · 3/5");
+  sectionTag(s, "ERGEBNISSE · 3/6");
+  slideTitle(s, "Topografische Erweiterung — flach vs. real");
+
+  // Drei-Karten-Vergleich aus Notebook 06b
+  s.addImage({
+    path: "/sessions/intelligent-practical-clarke/mnt/Einsatz von Geodaten in Marketing/reports/figures/score_flat_vs_topo.png",
+    x: 0.4, y: 1.55, w: 5.6, h: 2.0,
+    sizing: { type: "contain", w: 5.6, h: 2.0 },
+  });
+
+  // Verlierer/Gewinner-Tabelle (Mini)
+  card(s, 0.4, 3.7, 5.6, 1.45, C.bad);
+  s.addText("Top-Verlierer (Δ Score)", {
+    x: 0.55, y: 3.78, w: 2.6, h: 0.3,
+    fontFace: FONT_H, fontSize: 11, bold: true, color: C.bad, margin: 0,
+  });
+  s.addText([
+    { text: "Oberstrass  ", options: { color: C.ink } },
+    { text: "−13.8", options: { bold: true, color: C.bad, breakLine: true } },
+    { text: "Fluntern    ", options: { color: C.ink } },
+    { text: "−11.2", options: { bold: true, color: C.bad, breakLine: true } },
+    { text: "Alt-Wiedikon", options: { color: C.ink } },
+    { text: " −8.1", options: { bold: true, color: C.bad, breakLine: true } },
+    { text: "Wipkingen   ", options: { color: C.ink } },
+    { text: " −8.0", options: { bold: true, color: C.bad } },
+  ], { x: 0.55, y: 4.10, w: 2.6, h: 1.0,
+    fontFace: "Courier New", fontSize: 10, color: C.ink, margin: 0 });
+
+  s.addText("Top-Gewinner (Δ Score)", {
+    x: 3.25, y: 3.78, w: 2.6, h: 0.3,
+    fontFace: FONT_H, fontSize: 11, bold: true, color: C.good, margin: 0,
+  });
+  s.addText([
+    { text: "Mühlebach   ", options: { color: C.ink } },
+    { text: "+8.5", options: { bold: true, color: C.good, breakLine: true } },
+    { text: "Seefeld     ", options: { color: C.ink } },
+    { text: "+6.3", options: { bold: true, color: C.good, breakLine: true } },
+    { text: "Oerlikon    ", options: { color: C.ink } },
+    { text: "+4.4", options: { bold: true, color: C.good, breakLine: true } },
+    { text: "Werd        ", options: { color: C.ink } },
+    { text: "+3.0", options: { bold: true, color: C.good } },
+  ], { x: 3.25, y: 4.10, w: 2.6, h: 1.0,
+    fontFace: "Courier New", fontSize: 10, color: C.ink, margin: 0 });
+
+  // Erläuterung rechts
+  card(s, 6.2, 1.55, 3.4, 3.6, C.primary);
+  s.addText("Was ändert sich?", {
+    x: 6.4, y: 1.72, w: 3.0, h: 0.35,
+    fontFace: FONT_H, fontSize: 15, bold: true, color: C.primary, margin: 0,
+  });
+  s.addText([
+    { text: "Tobler-Hiking-Funktion", options: { bold: true, color: C.secondary, breakLine: true } },
+    { text: "Walking-Tempo abhängig von Steigung pro Edge — bergauf langsamer, bergab schneller.", options: { breakLine: true } },
+    { text: " ", options: { breakLine: true } },
+    { text: "SwissALTI3D 2 m DEM", options: { bold: true, color: C.secondary, breakLine: true } },
+    { text: "Höhe pro Knoten · Steigung pro Kante · 124 swisstopo-Kacheln.", options: { breakLine: true } },
+    { text: " ", options: { breakLine: true } },
+    { text: "Plausibilität bestätigt", options: { bold: true, color: C.good, breakLine: true } },
+    { text: "Verlierer = Hangzonen (Zürichberg, Käferberg, Üetliberg). Gewinner = flache See-Quartiere. ", options: { breakLine: true } },
+    { text: "Median Δ = −2.3, Range [−33, +19]." },
+  ], { x: 6.4, y: 2.15, w: 3.0, h: 2.9,
+    fontFace: FONT_B, fontSize: 10, color: C.ink, margin: 0 });
+
+  smallFooter(s, "Tobler · SwissALTI3D · Notebook 06b · 744 Hex × 8092 POIs · Dijkstra-Cutoff 15 min");
+  pageNumber(s, 13, TOTAL);
+}
+
+// --- 14 Hypothesen-Test ----------------------------------------------------
+{
+  const s = pres.addSlide();
+  s.background = { color: C.bg };
+  sectionTag(s, "ERGEBNISSE · 4/6");
   slideTitle(s, "Hypothesen-Test");
 
   // H1
@@ -583,14 +654,14 @@ const TOTAL = 19;
   });
 
   smallFooter(s, "Werte aus 06_gap_analysis.ipynb · Live-Reproduzierbar");
-  pageNumber(s, 13, TOTAL);
+  pageNumber(s, 14, TOTAL);
 }
 
-// --- 14 Top/Flop Quartiere -------------------------------------------------
+// --- 15 Top/Flop Quartiere -------------------------------------------------
 {
   const s = pres.addSlide();
   s.background = { color: C.bg };
-  sectionTag(s, "ERGEBNISSE · 4/5");
+  sectionTag(s, "ERGEBNISSE · 5/6");
   slideTitle(s, "Top- & Flop-Quartiere");
 
   const top = [
@@ -635,14 +706,14 @@ const TOTAL = 19;
   chart("R", flop, C.bad,  "Flop 5 Quartiere");
 
   smallFooter(s, "Score-Mittelwert je Quartier · Gesamt-Range 9 – 92 · n = 34 (alle offiziellen Quartiere)");
-  pageNumber(s, 14, TOTAL);
+  pageNumber(s, 15, TOTAL);
 }
 
-// --- 15 Cluster-Typologie (Ergebnisse 5/5) --------------------------------
+// --- 16 Cluster-Typologie (Ergebnisse 6/6) --------------------------------
 {
   const s = pres.addSlide();
   s.background = { color: C.bg };
-  sectionTag(s, "ERGEBNISSE · 5/5");
+  sectionTag(s, "ERGEBNISSE · 6/6");
   slideTitle(s, "Quartier-Typologie via K-Means");
 
   // Erläuterung oben
@@ -713,10 +784,10 @@ const TOTAL = 19;
   });
 
   smallFooter(s, "K-Means (k=4) auf 6 standardisierten Kategorie-Accessibilities · sklearn");
-  pageNumber(s, 15, TOTAL);
+  pageNumber(s, 16, TOTAL);
 }
 
-// --- 16 Diskussion / Beantwortung Forschungsfrage --------------------------
+// --- 17 Diskussion / Beantwortung Forschungsfrage --------------------------
 {
   const s = pres.addSlide();
   s.background = { color: C.bg };
@@ -749,10 +820,10 @@ const TOTAL = 19;
       fontFace: FONT_B, fontSize: 11, color: C.ink, margin: 0 });
   });
 
-  pageNumber(s, 16, TOTAL);
+  pageNumber(s, 17, TOTAL);
 }
 
-// --- 17 Robustness Check ---------------------------------------------------
+// --- 18 Robustness Check ---------------------------------------------------
 {
   const s = pres.addSlide();
   s.background = { color: C.bg };
@@ -827,10 +898,10 @@ const TOTAL = 19;
        fontFace: FONT_B, fontSize: 10, color: C.ink, margin: 0 });
 
   smallFooter(s, "OLS-Regression mit statsmodels · Daten: reports/robustness_data.csv");
-  pageNumber(s, 17, TOTAL);
+  pageNumber(s, 18, TOTAL);
 }
 
-// --- 18 Limitationen -------------------------------------------------------
+// --- 19 Limitationen -------------------------------------------------------
 {
   const s = pres.addSlide();
   s.background = { color: C.bg };
@@ -854,10 +925,10 @@ const TOTAL = 19;
       fontFace: FONT_B, fontSize: 11, color: C.ink, margin: 0 });
   });
 
-  pageNumber(s, 18, TOTAL);
+  pageNumber(s, 19, TOTAL);
 }
 
-// --- 19 Ausblick + Schlussfolie --------------------------------------------
+// --- 20 Ausblick + Schlussfolie --------------------------------------------
 {
   const s = pres.addSlide();
   darkBg(s);
@@ -897,7 +968,7 @@ const TOTAL = 19;
   });
 
   smallFooter(s, "© OpenStreetMap-Mitwirkende · Stadt Zürich · BFS · swisstopo", true);
-  pageNumber(s, 19, TOTAL, true);
+  pageNumber(s, 20, TOTAL, true);
 }
 
 // Write

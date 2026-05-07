@@ -26,11 +26,13 @@ Wir berechnen für jede 100 m × 100 m-Zelle der Stadt Zürich einen **15-Minute
 | Datenquelle | OpenStreetMap (Geofabrik switzerland-latest.osm.pbf) | POIs, Strassennetz |
 | Datenquelle | BFS STATPOP 2023 | Bevölkerungsdichte (Hektar-Raster) |
 | Datenquelle | Stadt Zürich Open Data | Statistische Quartiere, Immobilien-Index |
-| Datenquelle | swisstopo / GeoAdmin | Stadtgrenze Zürich |
+| Datenquelle | swisstopo / GeoAdmin | Stadtgrenze Zürich, Hintergrundkarten |
+| Datenquelle | swisstopo SwissALTI3D | Digitales Höhenmodell (2 m) für topografische Score-Erweiterung |
 | DB | PostgreSQL 16 + PostGIS 3.4 | Zentrale Speicherung, räumliche Joins, SQL-Analysen |
 | Import | `osm2pgsql` | OSM-PBF → PostGIS-Schema (`planet_osm_point`, `planet_osm_polygon`, `planet_osm_line`) |
-| Routing | OSMnx + NetworkX | Walking-Isochronen (5/10/15 Min) |
-| Analyse | Python (GeoPandas, Pandas, NumPy, Shapely) | Score-Berechnung (Huff-Ansatz) |
+| Routing | OSMnx + NetworkX | Walking-Isochronen (5/10/15 Min), Dijkstra |
+| Topografie | rasterio + pyproj + Tobler-Hiking-Funktion | Steigungs-abhängige Walking-Zeiten pro Edge |
+| Analyse | Python (GeoPandas, Pandas, NumPy, Shapely, scipy) | Score-Berechnung (Huff-Ansatz, KDTree, single_source_dijkstra) |
 | Visualisierung | Folium, Matplotlib, contextily | Web- und Print-Karten |
 | Visualisierung | QGIS 3.40 LTR | 3D-Map (Score als Höhe), Print Layout |
 | Doku | Jupyter, Markdown | Reproduzierbare Notebooks |
@@ -75,11 +77,45 @@ Reihenfolge:
 
 1. `01_load_osm.ipynb` – OSM-POIs für Zürich extrahieren
 2. `02_streetnet_statpop.ipynb` – Walking-Graph + Bevölkerungsraster
-3. `03_postgis_import.ipynb` – Alles in PostGIS laden
-4. `04_isochrones.ipynb` – 15-Min-Isochronen je Hex-Zelle
-5. `05_score.ipynb` – Huff-gewichteter 15-Min-Score
-6. `06_gap_analysis.ipynb` – Versorgungslücken & Hypothesen-Test
-7. `07_visualization.ipynb` – Folium-Map + statische Plots
+3. `02b_elevation.ipynb` – ⭐ Höhen-Anreicherung des Walking-Graphs (SwissALTI3D)
+4. `03_postgis_import.ipynb` – Alles in PostGIS laden
+5. `04_isochrones.ipynb` – 15-Min-Isochronen je Hex-Zelle
+6. `05_score.ipynb` – Huff-gewichteter 15-Min-Score (flach, Luftlinie)
+7. `06_gap_analysis.ipynb` – Versorgungslücken & Hypothesen-Test
+8. `06b_delta.ipynb` – ⭐ Topografischer Score (Tobler) vs. flach — Δ-Visualisierung
+9. `07_visualization.ipynb` – Folium-Map + statische Plots
+
+### 4.5 Topografische Erweiterung (optional, für Notebooks 02b + 06b)
+
+Der topografische Score nutzt das **digitale Höhenmodell SwissALTI3D von swisstopo**, um den Walking-Graph mit Steigungs-Information anzureichern und mit der **Tobler-Hiking-Funktion** auf realistische Walking-Zeiten an Hängen zu kommen. Vorteil gegenüber der flachen 5-km/h-Annahme: Hangzonen wie Zürichberg, Hönggerberg, Käferberg und Üetliberg werden korrekt als langsamer abgebildet.
+
+**DEM beschaffen** (Login bei swisstopo erforderlich, kann nicht automatisiert werden):
+
+1. <https://www.swisstopo.admin.ch/de/geodata/height/alti3d.html> → "swissALTI3D Daten beziehen"
+2. Auswahl mit Gemeinde **Zürich (ZH)**, Format **GeoTIFF** (oder COG), Auflösung **2 m**, CRS **LV95**, Zeitstand "Aktuell"
+3. "Suchen" → bei "Zu viele Ergebnisse" auf **„Alle Links exportieren"** klicken → URL-Liste in `data/external/swissalti3d_zh_links.csv` ablegen
+4. Download und Merge automatisiert:
+
+```bash
+python scripts/download_dem_tiles.py data/external/swissalti3d_zh_links.csv
+python scripts/merge_dem.py
+# → erzeugt data/external/swissalti3d_zh.tif (~57 MB)
+```
+
+5. Notebooks `02b_elevation.ipynb` und `06b_delta.ipynb` ausführen.
+
+**Performance-Check vor dem 06b-Lauf** (geschätzt 30–60 s auf Laptop):
+
+```bash
+python scripts/benchmark_topo_score.py
+```
+
+**Tests:**
+
+```bash
+pip install "pytest>=8.0"
+pytest tests/test_tobler.py -v
+```
 
 ## 5. Repository-Struktur
 
@@ -120,5 +156,6 @@ Die Nutzung von Claude / ChatGPT 5.x ist transparent in [`docs/ki_einsatz.md`](d
 - OSM-Daten: © OpenStreetMap-Mitwirkende, ODbL
 - BFS STATPOP: © Bundesamt für Statistik
 - Stadt Zürich Open Data: CC BY 4.0
+- swisstopo SwissALTI3D: © swisstopo (frei mit Quellenangabe)
 
 Code dieses Repositorys: MIT.
