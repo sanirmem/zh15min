@@ -130,7 +130,7 @@ const TOTAL = 20;
 
   s.addText([
     { text: "Gruppe: ", options: { bold: true, color: "FFFFFF" } },
-    { text: "Mitglied 1 · Mitglied 2 · Mitglied 3", options: { color: "CBD5E1" } },
+    { text: "Memis Sanir · Andrea Callegari · Ioannis Organtzidis", options: { color: "CBD5E1" } },
   ], { x: 0.5, y: 3.85, w: 9, h: 0.4, fontFace: FONT_B, fontSize: 13, margin: 0 });
   s.addText([
     { text: "Modul: ", options: { bold: true, color: "FFFFFF" } },
@@ -983,7 +983,7 @@ const TOTAL = 20;
     x: 0.5, y: 4.2, w: 9.0, h: 0.6,
     fontFace: FONT_H, fontSize: 26, bold: true, color: "FFFFFF", margin: 0,
   });
-  s.addText("Repository · github.com/<gruppe>/zh15min   ·   Live-Demo: docker compose up -d", {
+  s.addText("Repository · github.com/sanirmem/zh15min   ·   Live-Demo: docker compose up -d", {
     x: 0.5, y: 4.85, w: 9.0, h: 0.35,
     fontFace: FONT_B, fontSize: 12, color: "94A3B8", margin: 0,
   });

@@ -43,7 +43,7 @@ Wir berechnen für jede 100 m × 100 m-Zelle der Stadt Zürich einen **15-Minute
 
 ```bash
 # Klonen
-git clone <repo-url>
+git clone https://github.com/sanirmem/zh15min.git
 cd zh15min
 
 # Virtuelle Umgebung

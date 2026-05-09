@@ -12,7 +12,7 @@
 ## Person A — Einleitung (Slides 1–6, ca. 2:30 Min)
 
 ### Slide 1 — Titel  *(15 s)*
-> „Hallo, wir sind Gruppe X mit dem Projekt The 15-Minute City Intelligence — ein Geo-Algorithmus, der die fussläufige Erreichbarkeit von Funktionen des täglichen Lebens für die ganze Stadt Zürich misst und Versorgungslücken aufzeigt."
+> „Hallo, wir sind Memis, Andrea und Ioannis und stellen euch unser Projekt The 15-Minute City Intelligence vor — ein Geo-Algorithmus, der die fussläufige Erreichbarkeit von Funktionen des täglichen Lebens für die ganze Stadt Zürich misst und Versorgungslücken aufzeigt."
 
 ### Slide 2 — Inhaltsverzeichnis  *(10 s)*
 > „Ich führe euch durch Hintergrund und Hypothesen. Person B übernimmt die Methodik und die Visualisierungs-Demos, Person C die Ergebnisse, Diskussion und Schluss."

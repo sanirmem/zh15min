@@ -16,17 +16,18 @@ Windows: Python von python.org, Docker Desktop, QGIS-OSGeo4W-Installer.
 
 ---
 
-## Schritt 1 — Repository einrichten (5 min)
+## Schritt 1 — Repository klonen (2 min)
 
 ```bash
-# Eine/r legt das Repo auf GitHub an: zh15min
-git clone git@github.com:<eure-org>/zh15min.git
+git clone https://github.com/sanirmem/zh15min.git
 cd zh15min
+```
 
-# Dieses Projekt-Skelett (alles, was Claude erstellt hat) hinein kopieren / commiten
-git add .
-git commit -m "Initial: Projektstruktur, Notebooks, src-Paket, Slides"
-git push
+Falls ihr SSH konfiguriert habt:
+
+```bash
+git clone git@github.com:sanirmem/zh15min.git
+cd zh15min
 ```
 
 ## Schritt 2 — Python-Umgebung (10 min)
