@@ -552,7 +552,7 @@ const TOTAL = 20;
     { text: "Grün = hohe Erreichbarkeit, Rot = niedrige", options: { breakLine: true } },
     { text: " ", options: { breakLine: true } },
     { text: "Live-Demo via PostGIS", options: { bold: true, color: C.secondary, breakLine: true } },
-    { text: "QGIS 3.44 + PostGIS-Verbindung — neue POIs lassen sich live einsetzen, der Score reagiert dynamisch." },
+    { text: "QGIS 3.40 LTR + PostGIS-Verbindung — neue POIs lassen sich live einsetzen, der Score reagiert dynamisch." },
   ], { x: 6.15, y: 2.25, w: 3.2, h: 2.6,
     fontFace: FONT_B, fontSize: 10.5, color: C.ink, margin: 0 });
 
@@ -669,7 +669,7 @@ const TOTAL = 20;
     fontFace: FONT_H, fontSize: 12, bold: true, color: C.good, margin: 0,
   });
   bigStat(s, 6.6, 2.18, 3.0, 0.9, "0 / 34", "Dichte > P75 ∧ Score-P25 ≤ P25", C.good);
-  s.addText("Kein Quartier erfüllt beide Schwellen. Zürichs Stadtstruktur ist konsistent — keine US-typischen 'food deserts'. Periphere Quartiere haben tiefen Score (5 < 20), dort wohnen aber auch wenige Menschen.", {
+  s.addText("Kein Quartier erfüllt beide Schwellen. Zürichs Stadtstruktur ist konsistent — keine US-typischen 'food deserts'. Periphere Quartiere haben tiefen Score (< 20), dort wohnen aber auch wenige Menschen.", {
     x: 6.75, y: 3.18, w: 2.7, h: 1.85,
     fontFace: FONT_B, fontSize: 9.5, color: C.ink, margin: 0,
   });
@@ -739,7 +739,7 @@ const TOTAL = 20;
 
   // Erläuterung oben
   s.addText([
-    { text: "Clustering der 28 Quartiere auf den ", options: {} },
+    { text: "Clustering der 34 Quartiere auf den ", options: {} },
     { text: "sechs Kategorie-Erreichbarkeiten", options: { bold: true } },
     { text: " (statt nur Total-Score) ergibt eine vier-typische Zürcher Quartier-Landschaft:", options: {} },
   ], { x: 0.5, y: 1.55, w: 9.0, h: 0.55,
@@ -822,7 +822,7 @@ const TOTAL = 20;
     { text: "liegen in der Stadtperipherie", options: { bold: true, color: C.primary } },
     { text: " (Leimbach, Witikon, Hirzenbach, Affoltern, Friesenberg) — über 80 Score-Punkte Abstand zum Zentrum. Die Korrelation Score × Distanz zum HB beträgt ", options: {} },
     { text: "ρ = −0.81 (p < 10⁻⁸)", options: { bold: true, color: C.bad } },
-    { text: " — Zentralität ist der dominante Treiber. Multi-Variate-Modell erklärt 86 % der Score-Varianz.", options: {} },
+    { text: " — Zentralität ist der dominante Treiber. Multi-Variate-Modell erklärt 91 % der Score-Varianz.", options: {} },
   ], { x: 0.7, y: 1.85, w: 8.6, h: 1.05,
        fontFace: FONT_B, fontSize: 14, color: C.ink, margin: 0 });
 
@@ -849,7 +849,7 @@ const TOTAL = 20;
   const s = pres.addSlide();
   s.background = { color: C.bg };
   sectionTag(s, "DISKUSSION · 2/2");
-  slideTitle(s, "Robustness Check — H1 hält stand");
+  slideTitle(s, "Robustness Check — Modell hält stand");
 
   // Linke Karte: Regressionstabelle
   card(s, 0.5, 1.65, 5.4, 3.4, C.primary);
@@ -904,8 +904,8 @@ const TOTAL = 20;
     fontFace: FONT_H, fontSize: 13, bold: true, color: C.secondary, margin: 0,
   });
   s.addText([
-    { text: "H1 robust", options: { bold: true, color: C.good, breakLine: true } },
-    { text: "Distanz hochsignifikant nach Kontrolle (β = −9.52).", options: { breakLine: true } },
+    { text: "H1a robust", options: { bold: true, color: C.good, breakLine: true } },
+    { text: "Distanz HB hochsignifikant nach Kontrolle (β = −9.52).", options: { breakLine: true } },
     { text: " ", options: { breakLine: true } },
     { text: "Topografie ist Co-Treiber", options: { bold: true, color: C.good, breakLine: true } },
     { text: "SwissALTI3D-Höhen: höher = niedrigerer Score (β = −0.107).", options: { breakLine: true } },

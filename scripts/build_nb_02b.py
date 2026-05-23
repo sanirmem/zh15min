@@ -15,7 +15,7 @@ cells = [
     md(
         "# 02b — Walking-Graph mit Höhen anreichern",
         "",
-        "**Ziel:** Den Walking-Graph aus Notebook 02 um Knoten-Höhen (`z`) und Kanten-Steigungen (`slope`) anreichern. Ergebnis ist die Vorbedingung für den **topografischen Score** (Notebook 05b), der mit der Tobler-Funktion realistische Walking-Zeiten an Steigungen ableitet.",
+        "**Ziel:** Den Walking-Graph aus Notebook 02 um Knoten-Höhen (`z`) und Kanten-Steigungen (`slope`) anreichern. Ergebnis ist die Vorbedingung für den **topografischen Score** (Notebook 06b), der mit der Tobler-Funktion realistische Walking-Zeiten an Steigungen ableitet.",
         "",
         "**Datenquelle:** SwissALTI3D von swisstopo — siehe `docs/data_sources.md` Quelle 8 für Bezugsweg. Die GeoTIFF muss manuell heruntergeladen und nach `data/external/swissalti3d_zh.tif` gelegt werden (kein automatisierter Download wegen swisstopo-Login).",
         "",
@@ -47,7 +47,7 @@ cells = [
     md(
         "## 2. Walking-Graph laden",
         "",
-        "Wir nehmen den in Notebook 02 gespeicherten Graph (`data/processed/zh_walk_graph.graphml`). OSMnx liefert ihn als `MultiDiGraph` — wir bestätigen das, weil die Tobler-Funktion in Notebook 05b auf gerichtete Kanten angewiesen ist (bergauf vs. bergab).",
+        "Wir nehmen den in Notebook 02 gespeicherten Graph (`data/processed/zh_walk_graph.graphml`). OSMnx liefert ihn als `MultiDiGraph` — wir bestätigen das, weil die Tobler-Funktion in Notebook 06b auf gerichtete Kanten angewiesen ist (bergauf vs. bergab).",
     ),
     code(
         "graph_path = config.PROCESSED_DIR / 'zh_walk_graph.graphml'",
@@ -102,7 +102,7 @@ cells = [
     md(
         "## 5. Kanten-Steigungen berechnen",
         "",
-        "Pro gerichteter Kante wird die Steigung als `(z_v − z_u) / length` gesetzt. Da OSMnx den Graph als MultiDiGraph liefert, sind u→v und v→u getrennte Kanten — Steigung ist daher **asymmetrisch** (bergauf positiv, bergab negativ). Das ist die Voraussetzung für die Tobler-Funktion in Notebook 05b.",
+        "Pro gerichteter Kante wird die Steigung als `(z_v − z_u) / length` gesetzt. Da OSMnx den Graph als MultiDiGraph liefert, sind u→v und v→u getrennte Kanten — Steigung ist daher **asymmetrisch** (bergauf positiv, bergab negativ). Das ist die Voraussetzung für die Tobler-Funktion in Notebook 06b.",
     ),
     code(
         "G = compute_edge_slopes(G)",
@@ -176,7 +176,7 @@ cells = [
         "- ✅ Kanten-Steigungen `slope` als asymmetrische Werte gesetzt",
         "- ✅ Topografischer Walk-Graph in `data/processed/zh_walk_graph_topo.graphml`",
         "",
-        "**Nächster Schritt** (Notebook 05b): Tobler-Walking-Geschwindigkeit pro Kante ableiten und einen netzwerkbasierten Score berechnen, der die Topografie berücksichtigt.",
+        "**Nächster Schritt** (Notebook 06b): Tobler-Walking-Geschwindigkeit pro Kante ableiten und einen netzwerkbasierten Score berechnen, der die Topografie berücksichtigt.",
     ),
 ]
 

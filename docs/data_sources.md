@@ -153,9 +153,8 @@ graph = compute_edge_slopes(graph)            # setzt slope pro Kante
 | `03_postgis_import.ipynb` | 2 (Geofabrik PBF → osm2pgsql), Outputs aus 01/02 |
 | `04_isochrones.ipynb` | 3 |
 | `05_score.ipynb` | Outputs aus 01/04 |
-| **`05b_topo_score.ipynb`** | Outputs aus 02b/04 (geplant) |
-| `06_gap_analysis.ipynb` | 4, 5, 6, eigener Score |
-| **`06b_delta.ipynb`** | Vergleich flat vs. topografisch (geplant) |
+| `06_gap_analysis.ipynb` | 4, 5, 6, eigener Score, 8 (Centroid-Höhen via SwissALTI3D) |
+| **`06b_delta.ipynb`** ⭐ | Outputs aus 02b/04 — Vergleich flat vs. topografisch (Tobler) |
 | `07_visualization.ipynb` | 7 + alles aus 05/06 |
 
 Bei allen Karten zwingend **Copyright-Hinweise**:

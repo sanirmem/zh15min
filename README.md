@@ -10,20 +10,22 @@
 
 ## 1. Projekt-Idee in einem Satz
 
-Wir berechnen für jede 100 m × 100 m-Zelle der Stadt Zürich einen **15-Minute-City-Score (0 – 100)**, der ausdrückt, wie viele Einrichtungen des täglichen Bedarfs (Einkauf, Bildung, Gesundheit, Erholung, ÖV) innerhalb eines 15-minütigen Fussweges erreichbar sind — und vergleichen diesen Score mit Bevölkerungsdichte und Immobilienpreisen, um **Versorgungslücken** und **Investitionschancen** sichtbar zu machen.
+Wir berechnen für **744 hexagonale Analyse-Zellen (200 m Apothem)** über der Stadt Zürich einen **15-Minute-City-Score (0 – 100)**, der ausdrückt, wie viele Einrichtungen des täglichen Bedarfs (Einkauf, Bildung, Gesundheit, Erholung, Gastro, ÖV) innerhalb eines 15-minütigen Fussweges erreichbar sind — und aggregieren ihn auf die **34 offiziellen Stadt-Zürich-Quartiere**, um **Versorgungslücken** und **Investitionschancen** im Vergleich zu Bevölkerungsdichte (BFS STATPOP, Hektarraster) und Median-Mietpreis sichtbar zu machen.
 
 ## 2. Forschungsfrage & Hypothesen
 
 **Forschungsfrage:** *In welchen Quartieren Zürichs klaffen die grössten Lücken zwischen Wohnungsdichte und täglicher Infrastruktur?*
 
-- **H1:** Der 15-Min-Score korreliert positiv mit dem Quadratmeterpreis pro Wohnung.
-- **H2:** Es existieren Neubau-/Entwicklungsgebiete mit hoher Bevölkerungsdichte aber unterdurchschnittlichem Score („Wüsteneffekt“).
+- **H1:** Der 15-Min-Score korreliert positiv mit dem Median-Mietpreis pro Quartier (Stadt Zürich Open Data).
+- **H1a (Robustness):** Der 15-Min-Score korreliert negativ mit der Distanz zum Hauptbahnhof — methodisch sauberer Proxy ohne Marktdaten-Confounder.
+- **H2 („Wüsteneffekt“):** Es existieren Quartiere mit hoher Bevölkerungsdichte aber unterdurchschnittlichem Score.
 
 ## 3. Toolchain (im Kurs verwendet)
 
 | Layer | Tool | Verwendung |
 |---|---|---|
-| Datenquelle | OpenStreetMap (Geofabrik switzerland-latest.osm.pbf) | POIs, Strassennetz |
+| Datenquelle | OpenStreetMap via OSMnx (Overpass-API) | POIs (6 Kategorien), Stadtgrenze, Walking-Graph |
+| Datenquelle | Geofabrik `switzerland-latest.osm.pbf` (optional) | Vollständiges OSM für `osm2pgsql`-PostGIS-Import |
 | Datenquelle | BFS STATPOP 2023 | Bevölkerungsdichte (Hektar-Raster) |
 | Datenquelle | Stadt Zürich Open Data | Statistische Quartiere, Immobilien-Index |
 | Datenquelle | swisstopo / GeoAdmin | Stadtgrenze Zürich, Hintergrundkarten |
@@ -125,7 +127,7 @@ zh15min/
 │   ├── raw/            # Rohdaten (nicht versioniert, .gitignore)
 │   ├── processed/      # GeoPackages, CSV-Outputs der Notebooks
 │   └── external/       # Stadtgrenze, STATPOP, Open Data Zürich
-├── notebooks/          # 01_… 07_… durchnummerierte Jupyter-Notebooks
+├── notebooks/          # 01–07 + 02b/06b (Topo-Erweiterung) — 9 Notebooks
 ├── src/zh15min/        # Wiederverwendbarer Python-Code (Module)
 ├── sql/                # PostGIS-Schema, Views, Queries
 ├── qgis/               # QGIS-Projektdatei (.qgz) + Style-Dateien
