@@ -3,13 +3,13 @@
 Vollständige, ablesbare Texte für alle 20 Slides. Drei Personen, ca. 3 Minuten pro Person, gesamthaft ungefähr 9 bis 10 Minuten.
 
 Aufteilung:
-- Memis: Slides 1–6 (Einleitung)
+- Ioannis: Slides 1–6 (Einleitung)
 - Andrea: Slides 7–12 (Methodik und Visualisierung)
-- Ioannis: Slides 13–20 (Topografie, Ergebnisse, Diskussion, Schluss)
+- Memis: Slides 13–20 (Topografie, Ergebnisse, Diskussion, Schluss)
 
 ---
 
-## Memis — Einleitung (Slides 1–6)
+## Ioannis — Einleitung (Slides 1–6)
 
 ### Slide 1 — Titel  *(15 s)*
 
@@ -61,11 +61,11 @@ Aufteilung:
 
 ### Slide 12 — 3D-Skyline  *(25 s)*
 
-> Zur Veranschaulichung wurde der Score in QGIS als 3D-Skyline visualisiert. Die Höhe einer Hex-Zelle entspricht dem Score multipliziert mit 30. Innenstadt-Quartiere erscheinen dadurch erhöht, während die Peripherie flach bleibt. Die QGIS-Visualisierung basiert auf einem direkten Layer-Zugriff auf die PostGIS-Tabelle. Bei einer Änderung der Datenbasis aktualisiert sich die Darstellung entsprechend. Das QGIS-Projekt liegt im Repository unter qgis/zh15min.qgz. Damit übergebe ich an Ioannis.
+> Zur Veranschaulichung wurde der Score in QGIS als 3D-Skyline visualisiert. Die Höhe einer Hex-Zelle entspricht dem Score multipliziert mit 30. Innenstadt-Quartiere erscheinen dadurch erhöht, während die Peripherie flach bleibt. Die QGIS-Visualisierung basiert auf einem direkten Layer-Zugriff auf die PostGIS-Tabelle. Bei einer Änderung der Datenbasis aktualisiert sich die Darstellung entsprechend. Das QGIS-Projekt liegt im Repository unter qgis/zh15min.qgz. Damit übergebe ich an Memis.
 
 ---
 
-## Ioannis — Topografie, Ergebnisse, Diskussion und Schluss (Slides 13–20)
+## Memis — Topografie, Ergebnisse, Diskussion und Schluss (Slides 13–20)
 
 ### Slide 13 — Topografische Erweiterung  *(45 s)*
 
@@ -143,6 +143,6 @@ Aufteilung:
 - Mikrofon: Headset oder externes Mikrofon, nicht das interne Laptop-Mikrofon. Ein kurzer Pegel-Test vor der Aufnahme ist empfehlenswert.
 - Folien: Alle Visualisierungen sind als statische Screenshots in das Deck eingebettet. Während der Aufnahme wird nichts live geöffnet. Die interaktiven Versionen (Folium-HTML, QGIS-Projekt) werden im Sprechtext einmal kurz erwähnt.
 - Aufnahme-Strategie: Pro Person ein separater Take. Im Schnitt werden die drei Takes zu einem durchgehenden Video zusammengeführt.
-- Stoppuhr-Plan: Memis ca. 2:45, Andrea ca. 3:15, Ioannis ca. 4:05. Gesamtlänge etwa 10 Minuten. Sollte das Gesamtvideo unter 9:30 bleiben müssen, kann auf Slide 19 (Limitationen) ca. 10 Sekunden gekürzt werden.
-- Übergaben: Memis schliesst Slide 6 mit "Damit übergebe ich an Andrea." Andrea schliesst Slide 12 mit "Damit übergebe ich an Ioannis." Ioannis schliesst Slide 20 mit "Damit endet unsere Präsentation."
+- Stoppuhr-Plan: Ioannis ca. 2:45, Andrea ca. 3:15, Memis ca. 4:05. Gesamtlänge etwa 10 Minuten. Sollte das Gesamtvideo unter 9:30 bleiben müssen, kann auf Slide 19 (Limitationen) ca. 10 Sekunden gekürzt werden.
+- Übergaben: Ioannis schliesst Slide 6 mit "Damit übergebe ich an Andrea." Andrea schliesst Slide 12 mit "Damit übergebe ich an Memis." Memis schliesst Slide 20 mit "Damit endet unsere Präsentation."
 - Bei Versprechen: durchziehen, nicht neu ansetzen. Versprechen wirken im Schnitt unauffälliger als wiederholte Anfänge.
