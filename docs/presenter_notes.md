@@ -57,13 +57,11 @@
 
 ### Slide 11 — Score-Karte  *(40 s)*
 
-> *(Falls Live-Demo: `reports/figures/score_map.html` in Folium öffnen, Layer „Quartiere" und POI-Layer aktivieren)*
-> „Hier seht ihr die Score-Karte: 744 Hex-Zellen über Zürich, je 200 Meter breit. Grün ist hohe Erreichbarkeit, Rot ist niedrige. Die **Hex-Score-Range geht von 0 bis 94, Median 23, Mittelwert 30**. Über 90 Punkte: Lindenhof, Werd, Rathaus, Langstrasse und City — der kompakte Innenstadtkern mit maximaler Funktionsmischung. Im Mittelfeld zwischen 40 und 70: Sihlfeld, Hard, Oerlikon und Enge — Wohnviertel mit guter ÖV-Anbindung. Unter 20 Punkten: Leimbach, Witikon, Hirzenbach, Affoltern und Friesenberg — Stadtperipherie und Hangwohnen."
+> „Hier seht ihr die Score-Karte: 744 Hex-Zellen über Zürich, je 200 Meter breit. Grün ist hohe Erreichbarkeit, Rot ist niedrige. Die **Hex-Score-Range geht von 0 bis 94, Median 23, Mittelwert 30**. Über 90 Punkte: Lindenhof, Werd, Rathaus, Langstrasse und City — der kompakte Innenstadtkern mit maximaler Funktionsmischung. Im Mittelfeld zwischen 40 und 70: Sihlfeld, Hard, Oerlikon und Enge — Wohnviertel mit guter ÖV-Anbindung. Unter 20 Punkten: Leimbach, Witikon, Hirzenbach, Affoltern und Friesenberg — Stadtperipherie und Hangwohnen. Die interaktive Folium-Karte mit allen Layern liegt im Repo unter `reports/figures/score_map.html` — wer mehr sehen will, kann sie nach dem Video selbst öffnen."
 
 ### Slide 12 — 3D-Skyline  *(25 s)*
 
-> *(Falls Live-Demo: QGIS-Projekt `qgis/zh15min.qgz`, 3D-Ansicht)*
-> „Damit der Score nicht abstrakt bleibt, haben wir ihn in QGIS als **3D-Skyline** visualisiert: Die Höhe einer Hex-Zelle entspricht Score mal 30. Innenstadt-Quartiere ragen wie Wolkenkratzer, die Peripherie ist flach. Die Karte ist ein Live-Layer auf der PostGIS-Tabelle — ein neuer POI in der Datenbank, und die Höhe reagiert sofort. Das ist die Brücke vom Algorithmus zur Stakeholder-Demo. Damit übergebe ich an Ioannis."
+> „Damit der Score nicht abstrakt bleibt, haben wir ihn in QGIS als **3D-Skyline** visualisiert: Die Höhe einer Hex-Zelle entspricht Score mal 30. Innenstadt-Quartiere ragen wie Wolkenkratzer, die Peripherie ist flach. Die Karte basiert auf einem Live-Layer auf der PostGIS-Tabelle — wer einen neuen POI in die Datenbank einsetzt, sieht die Höhe automatisch reagieren. Das QGIS-Projekt liegt im Repo unter `qgis/zh15min.qgz`. Damit übergebe ich an Ioannis."
 
 ---
 
@@ -144,10 +142,7 @@
 
 - **Tempo**: ein bisschen langsamer sprechen als ihr denkt — bei 9 Minuten lieber 15 % unter Tempo. Lieber kleine Pausen als überstürztes Vorlesen.
 - **Mikrofon**: Headset, nicht Laptop-Mic. Vor der Aufnahme einmal in Quicktime einen 10-Sekunden-Test machen.
-- **Live-Demos**: 
-  - Slide 11 (Folium): notfalls auf statische Karte zurückspringen, der Text passt zu beiden.
-  - Slide 12 (QGIS): vorher `qgis/zh15min.qgz` einmal lokal öffnen und die 3D-Ansicht voreinstellen.
-  - Slide 13 (Topo): `reports/figures/score_flat_vs_topo.png` ist bereits ins Deck eingebettet — keine separate Demo nötig.
+- **Slides mit Bildern**: alle Visualisierungen sind als statische Screenshots ins Deck eingebettet (`score_map.png`, `qgis_3d_score.png`, `score_flat_vs_topo.png`). Im Video wird **nichts live geöffnet** — wir sprechen jeweils über das, was die Folie schon zeigt. Die interaktiven Versionen (Folium-HTML, QGIS-Projekt) liegen im Repo und werden im Sprechtext kurz erwähnt, damit die Hörer wissen, wo sie selbst klicken können.
 - **Aufnahme-Strategie**: **ein Take pro Person**, dann alles in einem Cut zusammenschneiden — das wirkt zusammenhängender als ein gemeinsamer Take, in dem ihr euch gegenseitig unterbrechen müsst.
 - **Stoppuhr**: Memis 2:45, Andrea 3:15, Ioannis 4:05 → Total ~10:05. Wenn ihr unter 9:30 bleiben wollt, kann Ioannis bei Slide 19 (Limitationen) 10 Sekunden sparen — das kommt in der Q&A sowieso wieder hoch.
 - **Übergänge**: Memis endet auf „Damit übergebe ich an Andrea." Andrea endet auf „Damit übergebe ich an Ioannis." Ioannis schliesst mit „Vielen Dank für eure Aufmerksamkeit."
