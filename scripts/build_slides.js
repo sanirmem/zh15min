@@ -376,11 +376,11 @@ const TOTAL = 20;
 
   const tools = [
     { h: "Python · GeoPandas", b: "Datenaufbereitung, Geo-Operationen, Score-Berechnung." },
-    { h: "OSMnx + NetworkX",   b: "Walking-Graph laden, Isochronen via ego_graph (gewichtete Gehzeit)." },
-    { h: "PostGIS 3.4",        b: "Zentrale Speicherung, räumliche SQL-Joins, Indizes (GIST)." },
-    { h: "osm2pgsql",          b: "Vollständiger Import des CH-PBF in planet_osm_*-Tabellen." },
-    { h: "scipy.spatial.cKDTree", b: "Distanz-Lookup für Score: O((n+m)·log n) statt O(n·m)." },
-    { h: "QGIS 3.40 LTR",      b: "3D-Visualisierung (Score als Höhe), Print-Layout, Live-Demo." },
+    { h: "OSMnx",              b: "Overpass-API-Zugriff + Walking-Graph-Aufbau in einer Zeile." },
+    { h: "NetworkX",           b: "single_source_dijkstra für topografischen Score — 33 s für 8092 POIs." },
+    { h: "PostGIS 3.4",        b: "Zentrale Speicherung, räumliche SQL-Joins, GIST-Indizes." },
+    { h: "scipy.spatial.cKDTree", b: "Distanz-Lookup für Score: 6 min naiv → < 1 s, Faktor ~400." },
+    { h: "statsmodels",        b: "Multivariate OLS-Regression im Robustness Check (R² = 0.91)." },
   ];
 
   tools.forEach((t, i) => {
