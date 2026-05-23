@@ -62,7 +62,7 @@
 ## Person C — Topo, Hypothesen, Diskussion & Schluss (Slides 13–20, ca. 3:45 Min)
 
 ### Slide 13 — Topografische Erweiterung (NEU)  *(40 s)*  ⭐
-> „Eine flache 5-km/h-Annahme passt für die Innenstadt — aber Zürich hat Hänge: Zürichberg, Hönggerberg, Käferberg, Üetliberg. Wir haben deshalb das Höhenmodell **SwissALTI3D** in den Walking-Graph eingespeist und mit der **Tobler-Hiking-Funktion** für jede Kante eine realistische Walking-Zeit abgeleitet. Resultat — drei Karten: links flach, mitte topografisch, rechts das Delta. **Verlierer sind exakt die Hangzonen** — Oberstrass minus 14, Fluntern minus 11, Alt-Wiedikon und Wipkingen je minus 8 Punkte. **Gewinner sind flache See-Quartiere** — Mühlebach plus 8, Seefeld plus 6. Die Topografie ist also nicht nur ein Confounder im Robustness-Check, sondern ein eigenständiger erklärender Effekt."
+> „Eine flache 5-km/h-Annahme passt für die Innenstadt — aber Zürich hat Hänge: Zürichberg, Hönggerberg, Käferberg, Üetliberg. Wir haben deshalb das Höhenmodell **SwissALTI3D** in den Walking-Graph eingespeist und mit der **Tobler-Hiking-Funktion** für jede Kante eine realistische Walking-Zeit abgeleitet. Resultat — drei Karten: links flach, mitte topografisch, rechts das Delta. **Verlierer sind exakt die Hangzonen** — Oberstrass minus 14, Fluntern minus 11, **Gewerbeschule minus 10** (mitten in der Stadt — Üetlibergstrasse-Hang), Alt-Wiedikon und Wipkingen je minus 8 Punkte. **Gewinner sind flache See-Quartiere** — Mühlebach plus 8.5, Seefeld plus 6, Oerlikon plus 4. Die Topografie ist also nicht nur ein Confounder im Robustness-Check, sondern ein eigenständiger erklärender Effekt."
 > *(Don't forget: Methodik kurz nennen — POI-zentriertes Dijkstra mit 15-Min-Cutoff, 33 Sekunden für 8000 POIs.)*
 
 ### Slide 14 — Hypothesen-Test  *(35 s)*
@@ -71,10 +71,10 @@
 > **H2 quantitativ widerlegt:** Mit BFS-STATPOP-Dichten und Schwellwerten finden wir **0 von 34 Quartieren** als „Wüstenkandidaten". **Das ist die zentrale Erkenntnis**: Zürich hat keine US-typischen „food deserts" — wo viele Menschen wohnen, gibt es auch Versorgung. Stadtplanerisch eine positive Aussage.
 
 ### Slide 15 — Top/Flop Quartiere  *(25 s)*
-> „Top: City, Lindenhof, Werd, Rathaus — alle in der kompakten Innenstadt mit Score über 90. Flop: **Leimbach, Witikon, Hirzenbach, Affoltern** — Stadtperipherie mit Score zwischen 9 und 20. **Über 80 Score-Punkte Differenz innerhalb derselben Stadt.**"
+> „Top: Lindenhof, Werd, Rathaus, Langstrasse, City — alle in der kompakten Innenstadt mit Score über 90. Flop: **Leimbach, Witikon, Hirzenbach, Affoltern, Friesenberg** — Stadtperipherie mit Score zwischen 9 und 20. **Über 80 Score-Punkte Differenz innerhalb derselben Stadt.**"
 
 ### Slide 16 — Cluster-Typologie  *(35 s)*
-> „Wenn wir nicht den linearen Score, sondern die sechs Kategorie-Erreichbarkeiten clustern, ergibt sich eine vier-typische Quartier-Landschaft. **Typ A** ist die zentrale Mischung mit allem in Walking-Distanz. **Typ B**, das Mittelband, lebt von guter ÖV-Anbindung. **Typ C** — Stadtnord-Rand — ist Erholung-positiv aber alle anderen Funktionen tief. **Typ D**, die periphere Wohnviertel, sind durchgehend unterdurchschnittlich. Diese Typologie ist methodisch unabhängig vom linearen Ranking — und stützt unsere Erzählung mehrdimensional."
+> „Wenn wir nicht den linearen Score, sondern die sechs Kategorie-Erreichbarkeiten clustern, ergibt sich eine vier-typische Quartier-Landschaft. **Typ A** ist die zentrale Mischung mit allem in Walking-Distanz. **Typ B**, das Mittelband, lebt von guter ÖV-Anbindung. **Typ C** — Grünraum-dominiert (Saatlen, Seebach, Schwamendingen-Mitte, Friesenberg) — ist Erholung-stark (⌀ 0.63) aber alle anderen Funktionen tief. **Typ D**, die periphere Wohnviertel, sind durchgehend unterdurchschnittlich. Diese Typologie ist methodisch unabhängig vom linearen Ranking — und stützt unsere Erzählung mehrdimensional."
 
 ### Slide 17 — Antwort auf Forschungsfrage  *(25 s)*
 > „Die grössten Lücken liegen in der Peripherie. Drei Implikationen: für die Stadtplanung Versorgungs-Auflagen in Entwicklungsgebieten, für Investoren preisliche Chancen mit Vermarktungsrisiko, für den Einzelhandel klare Expansions-Targets. **Aber Vorsicht: Korrelation ≠ Kausalität — schauen wir uns mögliche Confounder an.**"

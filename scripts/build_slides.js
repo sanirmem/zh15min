@@ -510,13 +510,13 @@ const TOTAL = 20;
   });
   s.addText([
     { text: "Höchste Werte (> 90)", options: { bold: true, color: C.good, breakLine: true } },
-    { text: "Lindenhof, Werd, Rathaus, City — Kern-Innenstadt mit maximaler Funktionsmischung", options: { breakLine: true } },
+    { text: "Lindenhof, Werd, Rathaus, Langstrasse, City — Kern-Innenstadt mit maximaler Funktionsmischung", options: { breakLine: true } },
     { text: " ", options: { breakLine: true } },
-    { text: "Mittelfeld (30 – 60)", options: { bold: true, color: C.hi, breakLine: true } },
-    { text: "Sihlfeld, Wipkingen, Enge — Wohnviertel mit guter ÖV-Anbindung", options: { breakLine: true } },
+    { text: "Mittelfeld (40 – 70)", options: { bold: true, color: C.hi, breakLine: true } },
+    { text: "Sihlfeld, Hard, Oerlikon, Enge — Wohnviertel mit guter ÖV-Anbindung", options: { breakLine: true } },
     { text: " ", options: { breakLine: true } },
     { text: "Niedrigste Werte (< 20)", options: { bold: true, color: C.bad, breakLine: true } },
-    { text: "Leimbach, Witikon, Hirzenbach, Affoltern — Stadtperipherie und Hangwohnen" },
+    { text: "Leimbach, Witikon, Hirzenbach, Affoltern, Friesenberg — Stadtperipherie und Hangwohnen" },
   ], { x: 6.15, y: 2.25, w: 3.2, h: 2.6,
     fontFace: FONT_B, fontSize: 10.5, color: C.ink, margin: 0 });
 
@@ -581,32 +581,36 @@ const TOTAL = 20;
     fontFace: FONT_H, fontSize: 11, bold: true, color: C.bad, margin: 0,
   });
   s.addText([
-    { text: "Oberstrass  ", options: { color: C.ink } },
+    { text: "Oberstrass   ", options: { color: C.ink } },
     { text: "−13.8", options: { bold: true, color: C.bad, breakLine: true } },
-    { text: "Fluntern    ", options: { color: C.ink } },
+    { text: "Fluntern     ", options: { color: C.ink } },
     { text: "−11.2", options: { bold: true, color: C.bad, breakLine: true } },
-    { text: "Alt-Wiedikon", options: { color: C.ink } },
+    { text: "Gewerbeschule ", options: { color: C.ink } },
+    { text: "−10.1", options: { bold: true, color: C.bad, breakLine: true } },
+    { text: "Alt-Wiedikon ", options: { color: C.ink } },
     { text: " −8.1", options: { bold: true, color: C.bad, breakLine: true } },
-    { text: "Wipkingen   ", options: { color: C.ink } },
+    { text: "Wipkingen    ", options: { color: C.ink } },
     { text: " −8.0", options: { bold: true, color: C.bad } },
   ], { x: 0.55, y: 4.10, w: 2.6, h: 1.0,
-    fontFace: "Courier New", fontSize: 10, color: C.ink, margin: 0 });
+    fontFace: "Courier New", fontSize: 9.5, color: C.ink, margin: 0 });
 
   s.addText("Top-Gewinner (Δ Score)", {
     x: 3.25, y: 3.78, w: 2.6, h: 0.3,
     fontFace: FONT_H, fontSize: 11, bold: true, color: C.good, margin: 0,
   });
   s.addText([
-    { text: "Mühlebach   ", options: { color: C.ink } },
+    { text: "Mühlebach    ", options: { color: C.ink } },
     { text: "+8.5", options: { bold: true, color: C.good, breakLine: true } },
-    { text: "Seefeld     ", options: { color: C.ink } },
+    { text: "Seefeld      ", options: { color: C.ink } },
     { text: "+6.3", options: { bold: true, color: C.good, breakLine: true } },
-    { text: "Oerlikon    ", options: { color: C.ink } },
+    { text: "Oerlikon     ", options: { color: C.ink } },
     { text: "+4.4", options: { bold: true, color: C.good, breakLine: true } },
-    { text: "Werd        ", options: { color: C.ink } },
-    { text: "+3.0", options: { bold: true, color: C.good } },
+    { text: "Werd         ", options: { color: C.ink } },
+    { text: "+3.0", options: { bold: true, color: C.good, breakLine: true } },
+    { text: "Sihlfeld     ", options: { color: C.ink } },
+    { text: "+2.7", options: { bold: true, color: C.good } },
   ], { x: 3.25, y: 4.10, w: 2.6, h: 1.0,
-    fontFace: "Courier New", fontSize: 10, color: C.ink, margin: 0 });
+    fontFace: "Courier New", fontSize: 9.5, color: C.ink, margin: 0 });
 
   // Erläuterung rechts
   card(s, 6.2, 1.55, 3.4, 3.6, C.primary);
@@ -758,9 +762,9 @@ const TOTAL = 20;
       desc: "Wohnviertel mit guter Tram-/Bus-Anbindung.",
     },
     { tag: "Typ C", color: C.hi, score: "⌀ 29", n: "n = 4",
-      title: "Stadtnord-Rand",
+      title: "Grünraum-dominiert",
       members: "Saatlen · Seebach · Schwamendingen-Mitte · Friesenberg",
-      desc: "Erholung-positiv, alle anderen Funktionen tief.",
+      desc: "Erholung hoch (⌀ 0.63) · alle anderen Funktionen tief — Wald-/Parknähe statt zentraler Versorgung.",
     },
     { tag: "Typ D", color: C.bad, score: "⌀ 23", n: "n = 14",
       title: "Periphere Wohnviertel",

@@ -36,7 +36,7 @@ Pro Hex-Zelle summieren wir die Anzahl POIs einer Kategorie innerhalb von 1.2 km
 
 **06 Hypothesen-Test + Robustness Check** — die wissenschaftliche Substanz: Korrelation Score × Mietpreis (H1), Score × HB-Distanz (H1a), Wüsten-Schwellwert-Test (H2), Sensitivitäts-Analyse mit 4 Gewichts-Szenarien (Spearman ρ bleibt > 0.98 — methodisch robust), K-Means-Clustering der Quartier-Typologie, **multivariate OLS-Regression** mit Distanz + Höhe + POI-Dichte als Confounder-Kontrolle (R² = 0.91, alle drei Prädiktoren hochsignifikant).
 
-**06b Topografischer Score** *(Bonus)* — wendet die **Tobler-Hiking-Funktion** auf den höhenangereicherten Graph an (Walking-Tempo abhängig von Steigung), berechnet pro POI ein single-source-Dijkstra mit 15-Min-Cutoff, und vergleicht den so entstehenden „realen" Score mit dem flachen. Δ-Karte zeigt: Hangzonen wie Oberstrass (−13.8), Fluntern (−11.2), Alt-Wiedikon (−8.1) verlieren systematisch Punkte — flache See-Quartiere wie Mühlebach (+8.5), Seefeld (+6.3) gewinnen relativ.
+**06b Topografischer Score** *(Bonus)* — wendet die **Tobler-Hiking-Funktion** auf den höhenangereicherten Graph an (Walking-Tempo abhängig von Steigung), berechnet pro POI ein single-source-Dijkstra mit 15-Min-Cutoff, und vergleicht den so entstehenden „realen" Score mit dem flachen. Δ-Karte zeigt: Hangzonen wie Oberstrass (−13.8), Fluntern (−11.2), **Gewerbeschule (−10.1)**, Alt-Wiedikon (−8.1) verlieren systematisch Punkte — flache See-Quartiere wie Mühlebach (+8.5), Seefeld (+6.3) gewinnen relativ.
 
 **07 Visualisierung** — die Folium-Karte und die Print-Plots für die Slides.
 
