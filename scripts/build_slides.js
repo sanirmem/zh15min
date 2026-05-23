@@ -225,8 +225,8 @@ const TOTAL = 20;
   s.addText([
     { text: "Die ", options: {} },
     { text: "15-Minuten-Stadt", options: { bold: true, color: C.primary } },
-    { text: " (Moreno 2021) ist heute Leitbild moderner Stadtplanung — und wird zunehmend zum ", options: {} },
-    { text: "harten Wertfaktor", options: { bold: true } },
+    { text: " (Moreno 2021) ist in der Stadtplanung etabliert und gewinnt zunehmend ", options: {} },
+    { text: "Relevanz als Wertfaktor", options: { bold: true } },
     { text: " für Immobilien und Einzelhandel.", options: {} },
   ], { x: 0.5, y: 1.6, w: 9, h: 0.9, fontFace: FONT_B, fontSize: 16, color: C.ink, margin: 0 });
 
@@ -546,13 +546,13 @@ const TOTAL = 20;
   });
   s.addText([
     { text: "Höhe = Score × 30", options: { bold: true, color: C.good, breakLine: true } },
-    { text: "Innenstadt-Quartiere ragen wie Wolkenkratzer (Score 90+)", options: { breakLine: true } },
+    { text: "Innenstadt-Quartiere erscheinen erhöht (Score 90+)", options: { breakLine: true } },
     { text: " ", options: { breakLine: true } },
     { text: "Farbe = RdYlGn-Verlauf", options: { bold: true, color: C.hi, breakLine: true } },
     { text: "Grün = hohe Erreichbarkeit, Rot = niedrige", options: { breakLine: true } },
     { text: " ", options: { breakLine: true } },
-    { text: "Live-Demo via PostGIS", options: { bold: true, color: C.secondary, breakLine: true } },
-    { text: "QGIS 3.40 LTR + PostGIS-Verbindung — neue POIs lassen sich live einsetzen, der Score reagiert dynamisch." },
+    { text: "PostGIS-Anbindung", options: { bold: true, color: C.secondary, breakLine: true } },
+    { text: "QGIS 3.40 LTR mit Layer-Zugriff auf zh15min.score — bei Änderungen der Datenbasis aktualisiert sich die Darstellung." },
   ], { x: 6.15, y: 2.25, w: 3.2, h: 2.6,
     fontFace: FONT_B, fontSize: 10.5, color: C.ink, margin: 0 });
 
@@ -678,7 +678,7 @@ const TOTAL = 20;
     fontFace: FONT_B, fontSize: 9.5, color: C.ink, margin: 0,
   });
 
-  smallFooter(s, "Werte aus 06_gap_analysis.ipynb · Live-Reproduzierbar");
+  smallFooter(s, "Werte aus 06_gap_analysis.ipynb · vollständig reproduzierbar");
   pageNumber(s, 14, TOTAL);
 }
 
@@ -966,7 +966,7 @@ const TOTAL = 20;
   const next = [
     "DEM-basierte Topografie + Multi-Variate-Regression mit ÖV-Anbindung",
     "Echtzeit-Mobilitätsdaten — SBB GTFS, ZVV-Reisezeiten",
-    "Dynamisches Re-Scoring bei neuem POI (QGIS-Live-Demo)",
+    "Dynamisches Re-Scoring bei neuem POI via QGIS",
     "Erweiterung auf Winterthur, Basel — nationaler Vergleich",
   ];
   next.forEach((n, i) => {
