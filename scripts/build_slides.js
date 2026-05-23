@@ -983,11 +983,11 @@ const TOTAL = 20;
   // closing
   s.addShape("rect", { x: 0.5, y: 4.0, w: 1.4, h: 0.05,
     fill: { color: C.hi }, line: { color: C.hi, width: 0 } });
-  s.addText("Vielen Dank — Fragen & Diskussion", {
+  s.addText("Vielen Dank für eure Aufmerksamkeit!", {
     x: 0.5, y: 4.2, w: 9.0, h: 0.6,
     fontFace: FONT_H, fontSize: 26, bold: true, color: "FFFFFF", margin: 0,
   });
-  s.addText("Repository · github.com/sanirmem/zh15min   ·   Live-Demo: docker compose up -d", {
+  s.addText("Repository · github.com/sanirmem/zh15min", {
     x: 0.5, y: 4.85, w: 9.0, h: 0.35,
     fontFace: FONT_B, fontSize: 12, color: "94A3B8", margin: 0,
   });
