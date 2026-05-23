@@ -1,104 +1,103 @@
 # Sprecher-Skript für die Videopräsentation
 
-> **Vollständige, ablesbare Texte** für alle 20 Slides. 3 Personen × ca. 3 Min = ~10 Min total. Jeder Block ist als zusammenhängender Sprechtext formuliert — keine Stichworte mehr.
+Vollständige, ablesbare Texte für alle 20 Slides. Drei Personen, ca. 3 Minuten pro Person, gesamthaft ungefähr 9 bis 10 Minuten.
 
-**Aufteilung:**
-- **Memis (Person A)** — Einleitung & Hypothesen (Slides 1–6)
-- **Andrea (Person B)** — Methodik & Visualisierung (Slides 7–12)
-- **Ioannis (Person C)** — Topo, Ergebnisse, Diskussion, Schluss (Slides 13–20)
+Aufteilung:
+- Memis: Slides 1–6 (Einleitung)
+- Andrea: Slides 7–12 (Methodik und Visualisierung)
+- Ioannis: Slides 13–20 (Topografie, Ergebnisse, Diskussion, Schluss)
 
 ---
 
-## Memis — Einleitung (Slides 1–6, ca. 2:45)
+## Memis — Einleitung (Slides 1–6)
 
 ### Slide 1 — Titel  *(15 s)*
 
-> „Hallo, wir sind Memis, Andrea und Ioannis und stellen euch unser Projekt **The 15-Minute City Intelligence** vor — ein Geo-Algorithmus, der die fussläufige Erreichbarkeit von Funktionen des täglichen Lebens für die ganze Stadt Zürich misst und Versorgungslücken aufzeigt. Modul **Einsatz von Geodaten in Marketing**, ZHAW, Frühjahrssemester 2026."
+> Diese Präsentation behandelt das Projekt "The 15-Minute City Intelligence". Es handelt sich um einen Geo-Algorithmus, der die fussläufige Erreichbarkeit von Funktionen des täglichen Lebens für die Stadt Zürich berechnet und Versorgungslücken identifiziert. Das Projekt wurde im Rahmen des Moduls "Einsatz von Geodaten in Marketing" an der ZHAW im Frühjahrssemester 2026 erstellt.
 
 ### Slide 2 — Inhaltsverzeichnis  *(10 s)*
 
-> „Ich führe euch zuerst durch Hintergrund und Hypothesen. Andrea übernimmt anschliessend die Methodik und die Visualisierungs-Demos, Ioannis die Ergebnisse, Diskussion und den Schluss. Sechs Themenblöcke, neun Minuten — los geht's."
+> Die Präsentation gliedert sich in sechs Themenblöcke: Übersicht und Workflow, Einleitung mit Hintergrund und Hypothesen, Methodik, Ergebnisse, Diskussion und Schlussfolgerungen sowie Limitationen und Ausblick. Diese Struktur entspricht den Modulvorgaben.
 
 ### Slide 3 — Workflow-Übersicht  *(20 s)*
 
-> „Unser Workflow in sechs Schritten: Erstens Daten aus OpenStreetMap, BFS STATPOP, Stadt Zürich Open Data und swisstopo holen. Zweitens in eine PostGIS-Datenbank importieren. Drittens ein Hexagon-Gitter mit 200-Meter-Apothem über die Stadt legen — das sind 744 Analyse-Zellen. Viertens pro Zelle die Walking-Isochronen mit Huff-Distance-Decay berechnen. Fünftens daraus den Score von 0 bis 100 ableiten. Sechstens visualisieren in Folium, Matplotlib und QGIS-3D. Alles reproduzierbar mit einem einzigen `docker compose up`."
+> Der Workflow besteht aus sechs Schritten. Erstens werden die Daten aus OpenStreetMap, BFS STATPOP, Stadt Zürich Open Data und swisstopo geladen. Zweitens folgt der Import in eine PostGIS-Datenbank. Drittens wird ein Hexagon-Gitter mit 200 Metern Apothem über die Stadt gelegt, was 744 Analyse-Zellen ergibt. Viertens werden die Walking-Isochronen mit einem Huff-Distance-Decay berechnet. Fünftens wird daraus der Score auf einer Skala von 0 bis 100 abgeleitet. Sechstens erfolgt die Visualisierung in Folium, Matplotlib und QGIS.
 
-### Slide 4 — Hintergrund & Motivation  *(35 s)*
+### Slide 4 — Hintergrund und Motivation  *(35 s)*
 
-> „Die 15-Minuten-Stadt ist heute Leitbild moderner Stadtplanung — geprägt von Carlos Moreno im Jahr 2021. Die Grundidee: jede Funktion des täglichen Lebens innerhalb eines 15-minütigen Fussweges. Wir modellieren das mit einem Schwellwert von 1.2 Kilometern bei 5 km/h. Was in Zürich zunehmend zum harten Wertfaktor für Immobilien und Einzelhandel wird, lässt sich so erstmals datenbasiert messen. Wir bewerten **alle 34 offiziellen Stadt-Zürich-Quartiere simultan** — mit einer Score-Spanne von 9 bis 92, also über 80 Punkte Differenz innerhalb derselben Stadt. Das ist die strukturelle Ungleichheit, die unser Algorithmus sichtbar macht."
+> Das Konzept der 15-Minuten-Stadt wurde 2021 von Carlos Moreno geprägt. Es beschreibt die Idee, dass alle Funktionen des täglichen Lebens innerhalb eines 15-minütigen Fussweges erreichbar sein sollen. Im Modell wird der Schwellwert mit 1.2 Kilometern bei 5 km/h Gehgeschwindigkeit operationalisiert. Das Konzept ist in der Stadtplanung etabliert und gewinnt zunehmend Relevanz für Immobilien- und Einzelhandelsbewertungen. In der vorliegenden Arbeit werden alle 34 offiziellen statistischen Quartiere der Stadt Zürich simultan bewertet. Die Score-Werte reichen auf Quartiersebene von 9 bis 92 Punkten.
 
-### Slide 5 — Zielsetzung & Forschungsfrage  *(40 s)*
+### Slide 5 — Zielsetzung und Forschungsfrage  *(40 s)*
 
-> „Unsere Zielsetzung: einen automatisierten, reproduzierbaren Geo-Algorithmus zu entwickeln, der die Erreichbarkeit der wichtigsten Funktionen des täglichen Lebens für jeden Punkt in Zürich quantifiziert — als Grundlage für Stadtplanung und Immobilien-Bewertung. Daraus leiten wir unsere Forschungsfrage ab: ***In welchen Quartieren Zürichs klaffen die grössten Lücken zwischen Wohnungsdichte und täglicher Infrastruktur?*** Gemeint sind die sechs Funktionen Einkauf, Bildung, Gesundheit, Erholung, Gastronomie und ÖV. Die Antwort wollen wir nicht qualitativ formulieren, sondern mit drei testbaren Hypothesen — und das ist die nächste Slide."
+> Die Zielsetzung des Projekts ist die Entwicklung eines automatisierten und reproduzierbaren Geo-Algorithmus, der die Erreichbarkeit der wichtigsten Funktionen des täglichen Lebens für jeden Punkt in Zürich quantifiziert. Die Ergebnisse sollen als Grundlage für Stadtplanung und Immobilien-Bewertung dienen. Die Forschungsfrage lautet: In welchen Quartieren Zürichs klaffen die grössten Lücken zwischen Wohnungsdichte und täglicher Infrastruktur? Unter täglicher Infrastruktur verstehen wir die sechs Funktionen Einkauf, Bildung, Gesundheit, Erholung, Gastronomie und ÖV.
 
 ### Slide 6 — Hypothesen  *(45 s)*
 
-> „Drei Hypothesen. **H1**: Score korreliert positiv mit dem Median-Mietpreis — wenn unser Modell sinnvoll ist, müssten Quartiere mit hoher Erreichbarkeit auch höhere Mieten haben. Test: Pearson und Spearman über alle 34 Quartiere mit den Mietpreis-Daten von Stadt Zürich Open Data. **H1a** als Robustness-Variante: Score korreliert negativ mit der Distanz zum Hauptbahnhof — das ist ein methodisch sauberer Proxy für Zentralität, ohne Marktdaten-Confounder wie Sozialstruktur oder Lärm. **H2**, der Wüsteneffekt: Gibt es Quartiere mit hoher Bevölkerungsdichte aber niedrigem Score? Das wäre eine klassische 'food desert'-Konstellation aus den USA. Test: Schwellenwert-Logik — Dichte über P75 *und* Score im untersten Quartil. Damit übergebe ich an Andrea."
+> Aus der Forschungsfrage werden drei testbare Hypothesen abgeleitet. Hypothese 1 postuliert eine positive Korrelation zwischen Score und Median-Mietpreis. Getestet wird sie mit Pearson- und Spearman-Korrelationen über alle 34 Quartiere unter Verwendung der Mietpreis-Daten von Stadt Zürich Open Data. Hypothese 1a ist eine Robustness-Variante: Sie postuliert eine negative Korrelation zwischen Score und Distanz zum Hauptbahnhof. Die HB-Distanz dient als Proxy für Zentralität ohne Markt-Confounder. Hypothese 2 untersucht den sogenannten Wüsteneffekt, also die Existenz von Quartieren mit hoher Bevölkerungsdichte bei gleichzeitig niedrigem Score. Getestet wird sie mit einer Schwellenwert-Logik: Dichte oberhalb des 75. Perzentils und Score im untersten Quartil. Damit übergebe ich an Andrea.
 
 ---
 
-## Andrea — Methodik & Visualisierung (Slides 7–12, ca. 3:15)
+## Andrea — Methodik und Visualisierung (Slides 7–12)
 
 ### Slide 7 — Datenquellen  *(25 s)*
 
-> „Acht Datenquellen, alle Open Government oder Open Data — wir nutzen **keinen einzigen kommerziellen Datensatz**. OpenStreetMap via OSMnx liefert die POIs in sechs Kategorien und das Strassennetz. Geofabrik stellt das vollständige Schweiz-PBF für den optionalen PostGIS-Import bereit. BFS STATPOP liefert die Bevölkerungsdichte auf Hektar-Raster. Stadt Zürich Open Data liefert die 34 offiziellen Quartiergrenzen und den Mietpreis-Index. Swisstopo liefert Hintergrundkarten und das 2-Meter-Höhenmodell SwissALTI3D, plus der HB als LV95-Referenzpunkt für H1a."
+> Das Projekt verwendet acht Datenquellen, alle aus Open Government oder Open Data. Es wurden keine kommerziellen Datensätze verwendet. OpenStreetMap liefert über die OSMnx-Bibliothek die POIs in sechs Kategorien sowie das Walking-Strassennetz. Geofabrik stellt das vollständige Schweiz-PBF für den optionalen PostGIS-Import bereit. BFS STATPOP liefert die Bevölkerungsdichte auf Hektar-Raster. Stadt Zürich Open Data liefert die 34 offiziellen Quartiergrenzen und den Mietpreis-Index. Swisstopo liefert Hintergrundkarten und das 2-Meter-Höhenmodell SwissALTI3D.
 
 ### Slide 8 — Tools  *(30 s)*
 
-> „Drei Performance-Highlights aus unserem Stack. Erstens: **PostGIS** als Single Source of Truth — alle räumlichen Joins per SQL mit GIST-Indizes, genau wie im Kurs gezeigt. Zweitens: **scipy KDTree** als Beschleuniger — Score-Berechnung von ursprünglich sechs Minuten naiv auf unter eine Sekunde, Faktor 400. Drittens: **NetworkX single-source-Dijkstra** für den topografischen Score — 33 Sekunden für 8092 POIs. Plus **statsmodels** für die multivariate Regression als wissenschaftliche Absicherung. **OSMnx** wickelt Overpass-API und Walking-Graph in einer Zeile Code ab."
+> Der Tech-Stack besteht aus folgenden Komponenten: PostGIS dient als zentrale Datenhaltung, mit räumlichen Joins via SQL und GIST-Indizes. OSMnx kombiniert Overpass-API-Zugriff und Walking-Graph-Aufbau. Die Bibliothek scipy stellt mit der KDTree-Implementation einen effizienten Distanz-Lookup zur Verfügung, der die Score-Berechnung von ursprünglich rund sechs Minuten auf unter eine Sekunde reduziert. NetworkX wird für den single-source-Dijkstra-Algorithmus eingesetzt, der den topografischen Score in 33 Sekunden für 8092 POIs berechnet. Die multivariate Regression wird mit statsmodels umgesetzt.
 
 ### Slide 9 — Score-Formel  *(45 s)*
 
-> „Die Formel: Für jede Kategorie c und jede Hex-Zelle z summieren wir alle POIs innerhalb von 1.2 Kilometern Luftlinie, gewichtet mit einem **Huff-Distance-Decay** — das `e hoch minus β mal Distanz durch d-max`. Beta ist 1.5 — je weiter weg ein POI, desto weniger Beitrag. Das Ergebnis pro Kategorie liegt zwischen 0 und 1. Den Total-Score erhalten wir aus einer gewichteten Summe der sechs Kategorien, mal hundert. **Einkauf bekommt 22 Prozent**, **Bildung, Gesundheit und ÖV je 18 Prozent**, **Erholung 14 Prozent**, **Gastronomie 10 Prozent**. Die Gewichte sind angelehnt an Moreno, alle Parameter sind in `config.py` — eine Sensitivitäts-Analyse mit alternativen Werten läuft in 10 Sekunden."
+> Der Score wird in zwei Stufen berechnet. Erstens wird für jede Kategorie c und jede Hex-Zelle z eine Accessibility-Komponente A_c bestimmt. Dabei werden alle POIs der Kategorie innerhalb von 1.2 Kilometern Luftlinie summiert, jedoch gewichtet mit einem Huff-Distance-Decay der Form exponential von minus β mal Distanz geteilt durch d_max. Der Parameter β beträgt 1.5. Je grösser die Distanz, desto geringer der Beitrag eines POIs. Der Total-Score ergibt sich aus der gewichteten Summe der sechs Kategorien, multipliziert mit 100. Die Gewichte sind: Einkauf 22 Prozent, Bildung 18 Prozent, Gesundheit 18 Prozent, Erholung 14 Prozent, Gastronomie 10 Prozent, ÖV 18 Prozent. Die Gewichte sind angelehnt an Moreno und in der Datei config.py parametrisiert.
 
 ### Slide 10 — Pipeline  *(30 s)*
 
-> „Unsere Pipeline besteht aus **neun Notebooks** — sieben Kern-Notebooks plus zwei mit Stern markierte für die topografische Erweiterung. Schritt eins lädt POIs und Stadtgrenze aus OSM. Zwei den Walking-Graph plus Quartiere und STATPOP. Drei reichert den Graph mit SwissALTI3D-Höhen an. Vier importiert alles in PostGIS. Fünf erstellt das Hex-Gitter mit Demo-Isochronen. Sechs berechnet den Score per KDTree. Sieben macht Hypothesen-Test und Robustness Check. Acht der topografische Tobler-Score mit Delta-Vergleich. Neun die finalen Karten. **Reproduzierbar mit `docker compose up` und `jupyter execute`.**"
+> Die Implementation besteht aus neun Jupyter-Notebooks. Die Notebooks 02b und 06b sind die topografische Erweiterung. Notebook 1 lädt POIs und Stadtgrenze aus OSM. Notebook 2 erstellt den Walking-Graph und lädt STATPOP sowie die Quartiergrenzen. Notebook 2b reichert den Graph mit SwissALTI3D-Höhen an. Notebook 3 importiert alle Daten nach PostGIS. Notebook 4 erstellt das Hex-Gitter und Demo-Isochronen. Notebook 5 berechnet den Score. Notebook 6 testet die Hypothesen und führt den Robustness Check durch. Notebook 6b berechnet den topografischen Tobler-Score mit Delta-Vergleich. Notebook 7 erstellt die finalen Karten. Die gesamte Pipeline ist via docker compose und jupyter execute reproduzierbar.
 
 ### Slide 11 — Score-Karte  *(40 s)*
 
-> „Hier seht ihr die Score-Karte: 744 Hex-Zellen über Zürich, je 200 Meter breit. Grün ist hohe Erreichbarkeit, Rot ist niedrige. Die **Hex-Score-Range geht von 0 bis 94, Median 23, Mittelwert 30**. Über 90 Punkte: Lindenhof, Werd, Rathaus, Langstrasse und City — der kompakte Innenstadtkern mit maximaler Funktionsmischung. Im Mittelfeld zwischen 40 und 70: Sihlfeld, Hard, Oerlikon und Enge — Wohnviertel mit guter ÖV-Anbindung. Unter 20 Punkten: Leimbach, Witikon, Hirzenbach, Affoltern und Friesenberg — Stadtperipherie und Hangwohnen. Die interaktive Folium-Karte mit allen Layern liegt im Repo unter `reports/figures/score_map.html` — wer mehr sehen will, kann sie nach dem Video selbst öffnen."
+> Die Score-Karte zeigt 744 Hexagonal-Zellen über der Stadt Zürich, je 200 Meter breit. Die Farbskala reicht von Grün für hohe Erreichbarkeit zu Rot für niedrige. Die Hex-Score-Range geht von 0 bis 94, der Median liegt bei 23, der Mittelwert bei 30. Über 90 Punkte erreichen die Quartiere Lindenhof, Werd, Rathaus, Langstrasse und City — der kompakte Innenstadtkern. Im Mittelfeld zwischen 40 und 70 Punkten liegen Sihlfeld, Hard, Oerlikon und Enge — Wohnviertel mit guter ÖV-Anbindung. Unter 20 Punkten liegen Leimbach, Witikon, Hirzenbach, Affoltern und Friesenberg — alle in der Stadtperipherie oder in Hanglagen. Die interaktive Folium-Version der Karte findet sich im Repository unter reports/figures/score_map.html.
 
 ### Slide 12 — 3D-Skyline  *(25 s)*
 
-> „Damit der Score nicht abstrakt bleibt, haben wir ihn in QGIS als **3D-Skyline** visualisiert: Die Höhe einer Hex-Zelle entspricht Score mal 30. Innenstadt-Quartiere ragen wie Wolkenkratzer, die Peripherie ist flach. Die Karte basiert auf einem Live-Layer auf der PostGIS-Tabelle — wer einen neuen POI in die Datenbank einsetzt, sieht die Höhe automatisch reagieren. Das QGIS-Projekt liegt im Repo unter `qgis/zh15min.qgz`. Damit übergebe ich an Ioannis."
+> Zur Veranschaulichung wurde der Score in QGIS als 3D-Skyline visualisiert. Die Höhe einer Hex-Zelle entspricht dem Score multipliziert mit 30. Innenstadt-Quartiere erscheinen dadurch erhöht, während die Peripherie flach bleibt. Die QGIS-Visualisierung basiert auf einem direkten Layer-Zugriff auf die PostGIS-Tabelle. Bei einer Änderung der Datenbasis aktualisiert sich die Darstellung entsprechend. Das QGIS-Projekt liegt im Repository unter qgis/zh15min.qgz. Damit übergebe ich an Ioannis.
 
 ---
 
-## Ioannis — Topo, Ergebnisse, Diskussion & Schluss (Slides 13–20, ca. 4:05)
+## Ioannis — Topografie, Ergebnisse, Diskussion und Schluss (Slides 13–20)
 
-### Slide 13 — Topografische Erweiterung  *(45 s)*  ⭐
+### Slide 13 — Topografische Erweiterung  *(45 s)*
 
-> „Eine flache 5-km/h-Annahme passt für die Innenstadt — aber Zürich hat Hänge: Zürichberg, Hönggerberg, Käferberg, Üetliberg. Deshalb haben wir das **SwissALTI3D-Höhenmodell** mit 2-Meter-Auflösung über 124 Kacheln in den Walking-Graph eingespeist und mit der **Tobler-Hiking-Funktion** für jede Kante eine realistische, steigungsabhängige Walking-Zeit abgeleitet — bergauf langsamer, bergab schneller. Der Vergleich zum flachen Score zeigt ein klares Muster: **Verlierer sind exakt die Hangzonen** — Oberstrass minus 14, Fluntern minus 11, **Gewerbeschule minus 10** — die liegt mitten in der Stadt, aber am Üetlibergstrasse-Hang — Alt-Wiedikon und Wipkingen je minus 8 Punkte. **Gewinner sind flache See-Quartiere** — Mühlebach plus 8.5, Seefeld plus 6, Oerlikon plus 4. Median-Delta minus 2.3, Range minus 33 bis plus 19. Topografie ist also nicht nur Confounder, sondern eigenständiger Effekt — den wir auf Slide 18 nochmal in der Regression aufgreifen."
+> Eine konstante Gehgeschwindigkeit von 5 km/h ist für ebenes Gelände eine adäquate Annahme. Die Stadt Zürich weist jedoch mehrere ausgeprägte Hanglagen auf, darunter Zürichberg, Hönggerberg, Käferberg und Üetliberg. Aus diesem Grund wurde das Höhenmodell SwissALTI3D mit 2 Metern Auflösung über 124 Kacheln in den Walking-Graph eingespeist. Mittels Tobler-Hiking-Funktion wurde für jede Kante eine steigungsabhängige Walking-Zeit abgeleitet. Der Vergleich zwischen flachem und topografischem Score zeigt ein konsistentes Muster. Die grössten Verluste entstehen in Hangzonen: Oberstrass minus 13.8, Fluntern minus 11.2, Gewerbeschule minus 10.1 — letzteres trotz zentraler Lage, da am Üetlibergstrasse-Hang gelegen — Alt-Wiedikon minus 8.1 und Wipkingen minus 8.0. Gewinner sind flache See-Quartiere: Mühlebach plus 8.5, Seefeld plus 6.3, Oerlikon plus 4.4. Das Median-Delta liegt bei minus 2.3 Punkten, die Range zwischen minus 33 und plus 19.
 
 ### Slide 14 — Hypothesen-Test  *(35 s)*
 
-> „Die drei Hypothesen quantitativ getestet. **H1 unterstützt**: Score und Median-Mietpreis korrelieren positiv mit Spearman ρ gleich plus 0.56, Pearson r identisch, p unter 10 hoch minus 3 bei n gleich 34. Erreichbarkeit übersetzt sich tatsächlich in den Wohnungsmarkt. **H1a hochsignifikant**: ρ minus 0.81, r minus 0.84, p unter 10 hoch minus 8. Distanz zum Hauptbahnhof ist ein noch stärkerer, methodisch sauberer Prädiktor. Beide H1-Tests konvergieren. **H2 quantitativ widerlegt**: null von 34 Quartieren erfüllen die Wüsten-Schwellen. **Zürich hat keine US-typischen 'food deserts'** — wo Menschen wohnen, gibt es auch Versorgung. Stadtplanerisch eine positive Aussage."
+> Die drei Hypothesen wurden quantitativ überprüft. Hypothese 1 wird unterstützt: Score und Median-Mietpreis korrelieren positiv mit einem Spearman-Koeffizienten von plus 0.56 und einem Pearson-Wert von ebenfalls plus 0.56, bei einem p-Wert unter 10 hoch minus 3 und n gleich 34. Hypothese 1a ist hochsignifikant: Spearman gleich minus 0.81, Pearson gleich minus 0.84, p-Wert unter 10 hoch minus 8. Die Distanz zum Hauptbahnhof erweist sich als stärkerer Prädiktor als der Mietpreis. Hypothese 2 wird quantitativ widerlegt: Kein einziges der 34 Quartiere erfüllt die definierten Wüsten-Schwellwerte. Die Stadtstruktur Zürichs ist in diesem Sinne konsistent.
 
-### Slide 15 — Top- & Flop-Quartiere  *(25 s)*
+### Slide 15 — Top- und Flop-Quartiere  *(25 s)*
 
-> „Die Top fünf: Lindenhof, Werd, Rathaus und Langstrasse mit 91 bis 92 Punkten, City mit 91 — alle in der kompakten Innenstadt. Die Flop fünf: Leimbach mit 9 Punkten, Witikon mit 10, Hirzenbach, Affoltern und Friesenberg je 19 Punkte — alle in der Peripherie, drei davon in Hanglagen. **Über 80 Score-Punkte Differenz innerhalb derselben Stadt** — das ist die räumliche Ungleichheit, die unser Algorithmus exakt quantifiziert."
+> Die fünf höchstplatzierten Quartiere sind Lindenhof, Werd und Rathaus mit je 92 Punkten sowie Langstrasse und City mit je 91 Punkten. Die fünf niedrigsten sind Leimbach mit 9 Punkten, Witikon mit 10 Punkten sowie Hirzenbach, Affoltern und Friesenberg mit je 19 Punkten. Die Spannweite zwischen den Extremen beträgt über 80 Score-Punkte innerhalb derselben Stadt.
 
 ### Slide 16 — Cluster-Typologie  *(35 s)*
 
-> „Wenn wir nicht den linearen Total-Score, sondern die sechs Kategorie-Erreichbarkeiten clustern, ergibt sich eine vier-typische Quartier-Landschaft. **Typ A — zentrale Mischung** — alle sechs Funktionen in Walking-Distanz, sieben Quartiere, Durchschnitt 90. **Typ B — Mittelband mit ÖV** — neun Wohnquartiere mit guter Tram- und Bus-Anbindung, Durchschnitt 59. **Typ C — Grünraum-dominiert** — Saatlen, Seebach, Schwamendingen-Mitte und Friesenberg. Erholung-Wert 0.63 — der höchste über alle Cluster — alles andere tief. Wald- und Parknähe statt zentraler Versorgung. **Typ D — Periphere Wohnviertel** — 14 Quartiere mit durchgehend unterdurchschnittlichen Werten. Diese Typologie ist methodisch unabhängig vom linearen Ranking und stützt die Erzählung mehrdimensional."
+> Als ergänzende Analyse wurde ein K-Means-Clustering mit k gleich 4 auf den sechs Kategorie-Erreichbarkeiten durchgeführt, nicht auf dem aggregierten Score. Es resultieren vier Quartier-Typen. Typ A umfasst die zentrale Mischung mit allen sechs Funktionen in Walking-Distanz: sieben Quartiere, durchschnittlicher Score 90. Typ B ist das Mittelband mit ÖV-Anbindung: neun Wohnquartiere, Durchschnitt 59. Typ C ist Grünraum-dominiert und umfasst Saatlen, Seebach, Schwamendingen-Mitte und Friesenberg: Erholung-Accessibility 0.63 im Mittel, andere Kategorien unterdurchschnittlich. Typ D umfasst 14 periphere Wohnviertel mit durchgehend unterdurchschnittlichen Werten. Die Typologie liefert eine mehrdimensionale Charakterisierung jenseits des linearen Rankings.
 
-### Slide 17 — Antwort auf Forschungsfrage  *(25 s)*
+### Slide 17 — Antwort auf die Forschungsfrage  *(25 s)*
 
-> „Die grössten Versorgungslücken liegen klar in der Peripherie — Leimbach, Witikon, Hirzenbach, Affoltern, Friesenberg — über 80 Punkte Abstand zum Zentrum. Daraus drei konkrete Implikationen: für die Stadtplanung Versorgungs-Auflagen bei Entwicklungsgebieten vor der Erstvermietung, für Investoren preisliche Chancen in Score-unter-40-Lagen mit Vermarktungsrisiko, für den Einzelhandel klare Expansions-Targets. **Aber Vorsicht: Korrelation ist nicht Kausalität** — deshalb schauen wir uns Confounder an."
+> Die grössten Versorgungslücken liegen in der Stadtperipherie. Konkret betroffen sind Leimbach, Witikon, Hirzenbach, Affoltern und Friesenberg, mit einem Abstand von über 80 Punkten zum Stadtzentrum. Daraus ergeben sich drei Implikationen: Für die Stadtplanung Versorgungs-Auflagen bei Entwicklungsgebieten vor der Erstvermietung. Für Investoren preisliche Chancen in Score-unter-40-Lagen unter Berücksichtigung des Vermarktungsrisikos. Für den Einzelhandel klare Expansions-Targets.
 
-### Slide 18 — Robustness Check  *(45 s)*  ⭐
+### Slide 18 — Robustness Check  *(45 s)*
 
-> *(Auf die drei Status-Tags zeigen)*
-> „Die multivariate Regression mit drei Prädiktoren — Distanz zum Hauptbahnhof, Höhe aus dem echten SwissALTI3D-DEM und POI-Dichte — erklärt **91 Prozent der Score-Varianz**, adjustiertes R² gleich 0.90. **Distanz bleibt nach Kontrolle hochsignifikant**: β minus 9.52 bei p unter 10 hoch minus 6. **Topografie ist tatsächlich Co-Treiber**: höher gelegen gleich niedrigerer Score, β minus 0.107 bei p unter 10 hoch minus 3. POI-Dichte als dritter Prädiktor ebenfalls hochsignifikant. Damit ist **H1a robust gegen Confounder**. Plus: die Sensitivitäts-Analyse über vier Gewichts-Szenarien zeigt Spearman-Rang-Korrelation über 0.98 in allen Varianten — das Ranking ist **methodisch stabil**. Und die Luftlinien-Approximation im Score: Pearson 0.991 gegen echte Strassennetz-Distanz — also defensiv vertretbar."
+> Eine multivariate OLS-Regression wurde mit drei Prädiktoren durchgeführt: Distanz zum Hauptbahnhof, Höhe aus dem SwissALTI3D-DEM und POI-Dichte. Das Modell erklärt 91 Prozent der Varianz des Scores. Das adjustierte R² beträgt 0.90. Die Distanz zum Hauptbahnhof bleibt nach Kontrolle der Confounder hochsignifikant mit einem partiellen β von minus 9.52 und p kleiner 10 hoch minus 6. Die Topografie ist ein signifikanter Co-Treiber: höhere Lage korreliert mit niedrigerem Score, β gleich minus 0.107 bei p kleiner 10 hoch minus 3. Die POI-Dichte ist als dritter Prädiktor ebenfalls hochsignifikant. Die Sensitivitäts-Analyse mit vier alternativen Gewichts-Szenarien zeigt eine Spearman-Rang-Korrelation grösser als 0.98 in allen Varianten. Die Luftlinien-Approximation des Scores wurde gegen die echte Strassennetz-Distanz validiert; der Pearson-Koeffizient beträgt 0.991.
 
 ### Slide 19 — Limitationen  *(25 s)*
 
-> „Vier Limitationen, die wir offen benennen. Erstens **OSM-Datenqualität** — kleine, unmappte Geschäfte fehlen, wir nehmen die Verzerrung als gering an. Zweitens **Tobler-Modell-Annahme** — die Funktion ist auf Wandern in offenem Gelände kalibriert, nicht auf städtisches Gehen mit Ampeln und Querstrassen. Drittens **Single-City-Befund** — die H2-Falsifikation gilt für Zürich, nicht zwingend für andere Städte. Viertens **Mietpreis-Confounder** — Premium-Wohnlagen wie Hottingen oder Seefeld haben hohe Mieten trotz niedrigem Score, weil ruhige Hanglage auch Lagequalität ist. **Wir wissen, was wir nicht wissen.**"
+> Vier Limitationen sind zu nennen. Erstens die Datenqualität von OSM: kleine, nicht erfasste Geschäfte fehlen. Wir gehen von einer geringen Verzerrung aus, da Geschäfte ähnlicher Klassifikation in OSM konsistent erfasst sind. Zweitens die Tobler-Modell-Annahme: die Funktion ist auf Wandern in offenem Gelände kalibriert, nicht auf städtisches Gehen mit Ampeln und Querstrassen. Drittens der Single-City-Befund: die Falsifikation von Hypothese 2 gilt für Zürich, jedoch nicht zwingend für andere Städte. Viertens der Mietpreis-Confounder: Premium-Wohnlagen wie Hottingen oder Seefeld weisen hohe Mieten trotz niedrigerem Score auf.
 
-### Slide 20 — Ausblick & Dank  *(20 s)*
+### Slide 20 — Ausblick  *(20 s)*
 
-> „Vier nächste Iterationen: ÖV-Reisezeiten via SBB GTFS, Echtzeit-Re-Scoring bei neuen POIs in einer QGIS-Live-Demo, multivariate Erweiterung mit ÖV-Anbindung, und nationaler Vergleich mit Winterthur und Basel. Das gesamte Repository steht öffentlich auf **github.com/sanirmem/zh15min**, reproduzierbar mit `docker compose up`. Vielen Dank für eure Aufmerksamkeit — wir freuen uns auf eure Fragen."
+> Vier mögliche Erweiterungen wurden identifiziert: Erstens die Integration von DEM-basierter Topografie und multivariater Regression mit ÖV-Anbindung. Zweitens Echtzeit-Mobilitätsdaten via SBB GTFS und ZVV-Reisezeiten. Drittens dynamisches Re-Scoring bei neuen POIs. Viertens die methodische Erweiterung auf Winterthur und Basel als nationaler Vergleich. Das vollständige Repository steht unter github.com/sanirmem/zh15min zur Verfügung. Damit endet unsere Präsentation.
 
 ---
 
@@ -106,44 +105,44 @@
 
 ### „Warum genau diese sechs POI-Kategorien und Gewichte?"
 
-> „Inspiriert vom Moreno-Framework der sechs essenziellen urbanen Funktionen. Die Gewichte sind Parameter in `src/zh15min/config.py` — eine Sensitivitäts-Analyse mit alternativen Werten ist in unter 10 Sekunden machbar. Wir haben vier Szenarien getestet — Original, ÖV-fokussiert, Erholung-fokussiert und Equal-Weights. **Die Spearman-Rang-Korrelation der Quartier-Reihenfolge bleibt in allen Szenarien über 0.98** — das Ranking ist methodisch robust. Steht so auf Slide 18."
+> Die Kategorien folgen dem Moreno-Framework der sechs essenziellen urbanen Funktionen. Die Gewichte sind in src/zh15min/config.py parametrisiert. Wir haben eine Sensitivitäts-Analyse mit vier Szenarien durchgeführt: Original, ÖV-fokussiert, Erholung-fokussiert und Equal-Weights. Die Spearman-Rang-Korrelation der Quartier-Reihenfolge bleibt in allen Szenarien über 0.98. Das Ranking ist methodisch robust gegen die Gewichtswahl. Die entsprechenden Werte sind auf Slide 18 dokumentiert.
 
 ### „Wieso 34 Quartiere und nicht eine feinere Aufteilung?"
 
-> „Das ist die **offizielle Stadt-Zürich-Liste der statistischen Quartiere** — bezogen über den WFS-Endpunkt von `ogd.stadt-zuerich.ch`. Wir haben uns bewusst gegen die feinere OSM-`admin_level=10`-Aufteilung entschieden, weil die offizielle Geometrie mit dem Mietpreis-Index und den STATPOP-Bevölkerungsdaten einheitlich joinbar ist. **Konsistente Datengrundlage** ist wichtiger als feinere Granularität — und mit 744 Hex-Zellen auf 200 m Apothem haben wir die räumliche Auflösung intern ohnehin viel feiner."
+> Es handelt sich um die offizielle Stadt-Zürich-Liste der statistischen Quartiere, bezogen über den WFS-Endpunkt von ogd.stadt-zuerich.ch. Eine feinere Aufteilung wäre über OSM mit admin_level gleich 10 möglich, jedoch ist die offizielle Geometrie mit den Mietpreis-Daten und STATPOP-Bevölkerungsdaten konsistent joinbar. Die räumliche Auflösung bleibt mit 744 Hex-Zellen auf 200 Metern Apothem intern feiner.
 
 ### „Warum Luftlinien-Distanz statt echter Walking-Distanz im Hauptscore?"
 
-> „Wir haben das empirisch validiert in Notebook 06: für alle 34 Quartier-Centroide haben wir die echte Strassengraph-Distanz zum HB via Dijkstra berechnet und mit der Luftlinie korreliert. **Pearson r = 0.991, Median-Detour-Faktor 1.20, Worst-Case 1.41.** Die Luftlinie erklärt **98.2 Prozent der Varianz** in echten Walking-Distanzen — defensiv voll vertretbar. Für die Score-Berechnung über 744 Zellen mal 8 092 POIs ist das ein Performance-Faktor von rund 400 (KDTree statt Dijkstra). **Plus** wir haben mit der Tobler-Erweiterung in Notebook 06b zusätzlich die topografisch korrekte Variante geliefert — beide Ansätze sind im Repo."
+> Diese Vereinfachung wurde empirisch validiert. Für alle 34 Quartier-Centroide wurde die Strassengraph-Distanz zum Hauptbahnhof per Dijkstra berechnet und mit der Luftlinie korreliert. Der Pearson-Koeffizient beträgt 0.991, der Median-Detour-Faktor 1.20 und der Worst-Case 1.41. Die Luftlinie erklärt 98.2 Prozent der Varianz in echten Walking-Distanzen. Der Performance-Gewinn beträgt rund Faktor 400 (KDTree statt Dijkstra). Zusätzlich liegt mit Notebook 06b die topografisch korrekte Variante via Tobler-Funktion vor.
 
-### „Wie geht ihr mit Confoundern um?" ⭐
+### „Wie wird mit Confoundern umgegangen?"
 
-> „Genau dafür haben wir den Robustness Check auf Slide 18 gemacht: multivariate OLS-Regression mit Distanz, Höhe aus echtem SwissALTI3D-DEM und POI-Dichte. **R² = 0.91, adjustiert 0.90.** Distanz bleibt nach Kontrolle hochsignifikant — β minus 9.52, p unter 10 hoch minus 6. Topografie ist Co-Treiber — β minus 0.107, p unter 10 hoch minus 3. POI-Dichte als dritter Prädiktor ebenfalls hochsignifikant. **Plus** der eigenständige topografische Score auf Slide 13 zeigt das Pattern visuell — Hangzonen verlieren exakt das, was die Regression vorhersagt. Konvergenz zwischen Regressionsmodell und Score-Differenzkarte."
+> Der Robustness Check auf Slide 18 adressiert diese Frage. Eine multivariate OLS-Regression mit Distanz zum Hauptbahnhof, Höhe aus dem SwissALTI3D-DEM und POI-Dichte erklärt 91 Prozent der Score-Varianz. Adjustiertes R² gleich 0.90. Die Distanz bleibt nach Kontrolle hochsignifikant (β gleich minus 9.52, p kleiner 10 hoch minus 6). Die Topografie ist ein signifikanter Co-Treiber (β gleich minus 0.107, p kleiner 10 hoch minus 3). Die POI-Dichte ist als dritter Prädiktor ebenfalls hochsignifikant.
 
-### „Tobler — ist das die richtige Wahl für eine Stadt?"
+### „Ist die Tobler-Funktion für eine Stadt geeignet?"
 
-> „Tobler 1993 ist seit über 30 Jahren der Standard für topografisches Routing und passt für menschliches Gehverhalten — Maximum bei minus 5 Prozent Steigung mit 6 km/h, exponentieller Abfall bei steileren Gradienten. Bei flachem Gelände ergibt Tobler ungefähr 5.04 km/h — also kompatibel mit unserer flachen 5-km/h-Annahme. **Wir clippen extreme Steigungen über 50 Prozent**, weil das in OSM Treppen-Artefakte sind, nicht echte Strassen. Die Limitation, dass Tobler nicht stadt-spezifisch ist (Ampeln, Querstrassen), benennen wir auf Slide 19 offen."
+> Die Tobler-Hiking-Funktion stammt aus dem Jahr 1993 und ist der etablierte Standard für topografisches Routing. Sie modelliert die Gehgeschwindigkeit als Funktion der Steigung, mit einem Maximum von 6 km/h bei minus 5 Prozent Steigung und exponentiellem Abfall bei steileren Gradienten. Bei ebenem Gelände ergibt die Funktion rund 5.04 km/h, was mit der flachen 5-km/h-Annahme konsistent ist. Extreme Steigungen über 50 Prozent werden geclippt, da es sich in OSM in der Regel um Treppen-Artefakte handelt. Die Limitation, dass die Funktion nicht speziell auf städtisches Gehen mit Ampeln und Querstrassen kalibriert ist, wurde auf Slide 19 transparent benannt.
 
-### „H1 ist signifikant — aber Mietpreise haben doch ganz andere Treiber?"
+### „Wie sind die Hypothesen-Ergebnisse vor Confoundern zu interpretieren?"
 
-> „Stimmt — der bivariate Spearman ρ gleich plus 0.56 ist erstmal nur eine Korrelation. **Die multivariate Kontrolle kommt auf Slide 18**: Distanz, Höhe und POI-Dichte erklären zusammen 91 Prozent der Score-Varianz. Mietpreise hängen aber nicht nur am Score — Premium-Wohnlagen wie Hottingen und Seefeld haben hohe Mieten OHNE hohe POI-Dichte (ruhige plus grüne Lage als alternative 'gute Lage'-Definition). Diese Limitation steht explizit auf Slide 19. Was H1 unterstützt: die Richtung der Korrelation ist robust positiv und konvergiert mit H1a."
+> Der bivariate Spearman-Koeffizient von plus 0.56 für Hypothese 1 ist eine reine Korrelation. Die multivariate Kontrolle erfolgt auf Slide 18, wo Distanz, Höhe und POI-Dichte zusammen 91 Prozent der Score-Varianz erklären. Mietpreise hängen nicht ausschliesslich am Score. Premium-Wohnlagen wie Hottingen und Seefeld weisen hohe Mieten ohne hohe POI-Dichte auf. Diese Limitation ist auf Slide 19 dokumentiert.
 
-### „Warum gerade 1.2 km als d-max und nicht 1.25 km?"
+### „Warum d_max gleich 1.2 km und nicht 1.25 km?"
 
-> „5 km/h mal 15 Minuten gibt geometrisch 1.25 km. Wir runden auf 1.2 km, weil wir konservativ schätzen und weil OSM-POIs nicht zentimetergenau lokalisiert sind. **Die Sensitivität gegenüber dieser Annahme ist klein** — wir haben in Notebook 06 die Score-Rangkorrelation für d-max von 1.0, 1.2 und 1.5 km getestet — Spearman bleibt über 0.97."
+> Geometrisch ergibt sich aus 5 km/h mal 15 Minuten ein Wert von 1.25 Kilometern. Wir runden konservativ auf 1.2 Kilometer. Die Sensitivität gegenüber dieser Annahme wurde geprüft: Bei d_max von 1.0, 1.2 und 1.5 Kilometern bleibt der Spearman-Rang der Quartiere über 0.97 stabil.
 
-### „Warum keine ÖV-Reisezeiten statt nur ÖV-POIs?"
+### „Wieso werden ÖV-POIs gezählt statt Reisezeiten verwendet?"
 
-> „Aktuell zählen wir Tram-/Bus-Haltestellen als ÖV-POIs — das gewichtet *physische Erreichbarkeit der Haltestelle*, nicht *Reisezeit zum Ziel*. Das ist eine bewusste Vereinfachung — die SBB-GTFS-Erweiterung steht explizit als nächster Schritt auf Slide 20. Mit GTFS könnten wir 'Reisezeit zum HB' als Score-Komponente integrieren und nicht nur 'Distanz zur Haltestelle'."
+> Die aktuelle Implementation zählt Tram- und Bushaltestellen als ÖV-POIs. Dies gewichtet die physische Erreichbarkeit der Haltestelle, nicht die Reisezeit zum Ziel. Eine Erweiterung mit SBB-GTFS-Daten ist als nächste Iteration auf Slide 20 vorgesehen.
 
 ---
 
-## Tipps für die Aufnahme
+## Aufnahme-Hinweise
 
-- **Tempo**: ein bisschen langsamer sprechen als ihr denkt — bei 9 Minuten lieber 15 % unter Tempo. Lieber kleine Pausen als überstürztes Vorlesen.
-- **Mikrofon**: Headset, nicht Laptop-Mic. Vor der Aufnahme einmal in Quicktime einen 10-Sekunden-Test machen.
-- **Slides mit Bildern**: alle Visualisierungen sind als statische Screenshots ins Deck eingebettet (`score_map.png`, `qgis_3d_score.png`, `score_flat_vs_topo.png`). Im Video wird **nichts live geöffnet** — wir sprechen jeweils über das, was die Folie schon zeigt. Die interaktiven Versionen (Folium-HTML, QGIS-Projekt) liegen im Repo und werden im Sprechtext kurz erwähnt, damit die Hörer wissen, wo sie selbst klicken können.
-- **Aufnahme-Strategie**: **ein Take pro Person**, dann alles in einem Cut zusammenschneiden — das wirkt zusammenhängender als ein gemeinsamer Take, in dem ihr euch gegenseitig unterbrechen müsst.
-- **Stoppuhr**: Memis 2:45, Andrea 3:15, Ioannis 4:05 → Total ~10:05. Wenn ihr unter 9:30 bleiben wollt, kann Ioannis bei Slide 19 (Limitationen) 10 Sekunden sparen — das kommt in der Q&A sowieso wieder hoch.
-- **Übergänge**: Memis endet auf „Damit übergebe ich an Andrea." Andrea endet auf „Damit übergebe ich an Ioannis." Ioannis schliesst mit „Vielen Dank für eure Aufmerksamkeit."
-- **Bei Verzählen**: ruhig durchziehen, nicht neu ansetzen — die Aufnahme ist ohnehin durchschnittlich nicht perfekt, und Stocken wirkt natürlicher als ein zweites Take mit hörbarem „Ach Mist".
+- Tempo: bewusst etwas langsamer sprechen als gewohnt. Bei 9 bis 10 Minuten Gesamtlänge ist Verständlichkeit wichtiger als Zügigkeit.
+- Mikrofon: Headset oder externes Mikrofon, nicht das interne Laptop-Mikrofon. Ein kurzer Pegel-Test vor der Aufnahme ist empfehlenswert.
+- Folien: Alle Visualisierungen sind als statische Screenshots in das Deck eingebettet. Während der Aufnahme wird nichts live geöffnet. Die interaktiven Versionen (Folium-HTML, QGIS-Projekt) werden im Sprechtext einmal kurz erwähnt.
+- Aufnahme-Strategie: Pro Person ein separater Take. Im Schnitt werden die drei Takes zu einem durchgehenden Video zusammengeführt.
+- Stoppuhr-Plan: Memis ca. 2:45, Andrea ca. 3:15, Ioannis ca. 4:05. Gesamtlänge etwa 10 Minuten. Sollte das Gesamtvideo unter 9:30 bleiben müssen, kann auf Slide 19 (Limitationen) ca. 10 Sekunden gekürzt werden.
+- Übergaben: Memis schliesst Slide 6 mit "Damit übergebe ich an Andrea." Andrea schliesst Slide 12 mit "Damit übergebe ich an Ioannis." Ioannis schliesst Slide 20 mit "Damit endet unsere Präsentation."
+- Bei Versprechen: durchziehen, nicht neu ansetzen. Versprechen wirken im Schnitt unauffälliger als wiederholte Anfänge.
